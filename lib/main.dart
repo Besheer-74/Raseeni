@@ -1,7 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raseeni/view/bottomNavBar.dart';
+import 'controller/bottomNavBarController.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Bottomnavbarcontroller()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -15,6 +25,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'IBM Plex Sans',
         useMaterial3: true,
       ),
+      home: MyHomePage(),
     );
   }
 }
