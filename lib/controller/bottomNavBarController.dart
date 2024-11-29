@@ -6,6 +6,6 @@ class Bottomnavbarcontroller extends ChangeNotifier {
 
   selectedScreen(index) {
     _currentIndex = index;
-    ChangeNotifier();
+    notifyListeners();
   }
 }

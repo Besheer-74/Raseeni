@@ -1,57 +1,72 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
+import 'package:raseeni/model/appStyle.dart';
 
 import '../controller/bottomNavBarController.dart';
+import 'profileScreen.dart';
 import 'chatScreen.dart';
 import 'dashboardScreen.dart';
 import 'homeScreen.dart';
 
-class MyHomePage extends StatelessWidget {
+class BottomNavBar extends StatelessWidget {
+  final List<Widget> _pages = [
+    Homescreen(),
+    Chatscreen(),
+    Dashboardscreen(),
+    Profilescreen(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final _bottomNavBarController =
         Provider.of<Bottomnavbarcontroller>(context);
 
-    final List<Widget> _pages = [
-      Homescreen(),
-      Chatscreen(),
-      Dashboardscreen(),
-    ];
-
     return Scaffold(
-      body: _pages[_bottomNavBarController.currentIndex],
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
-        child: GNav(
-          rippleColor: Colors.purple.shade100,
-          hoverColor: Colors.purple.shade100,
-          gap: 8,
-          activeColor: Colors.purple,
-          iconSize: 24,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          duration: Duration(milliseconds: 400),
-          tabBackgroundColor: Colors.purple.shade100,
-          color: Colors.black,
-          tabs: [
-            GButton(
-              icon: Icons.home,
-              text: 'Home',
+      body: Stack(
+        children: [
+          _pages[_bottomNavBarController.currentIndex],
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: ClipRRect(
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                child: Container(
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: appStyles.whiteColor.withOpacity(0.5),
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20)),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildIcon(appStyles.home, 0, _bottomNavBarController),
+                      _buildIcon(appStyles.chat, 1, _bottomNavBarController),
+                      _buildIcon(
+                          appStyles.dashboard, 2, _bottomNavBarController),
+                      _buildIcon(appStyles.profile, 3, _bottomNavBarController),
+                    ],
+                  ),
+                ),
+              ),
             ),
-            GButton(
-              icon: Icons.chat_rounded,
-              text: 'Chat',
-            ),
-            GButton(
-              icon: Icons.dashboard,
-              text: 'Dashboard',
-            ),
-          ],
-          selectedIndex: _bottomNavBarController.currentIndex,
-          onTabChange: (index) {
-            _bottomNavBarController.selectedScreen(index);
-          },
-        ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildIcon(
+      IconData icon, int index, Bottomnavbarcontroller controller) {
+    return GestureDetector(
+      onTap: () => controller.selectedScreen(index),
+      child: Icon(
+        icon,
+        color: controller.currentIndex == index
+            ? appStyles.indigoColor
+            : appStyles.blackColor,
       ),
     );
   }

@@ -1,4 +1,4 @@
-package com.example.raseeni
+package com.rasseni.app;
 
 import io.flutter.embedding.android.FlutterActivity
 

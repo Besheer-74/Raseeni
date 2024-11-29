@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:raseeni/view/bottomNavBar.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:raseeni/model/appStyle.dart';
+import 'firebase_options.dart';
+
+import 'view/bottomNavBar.dart';
 import 'controller/bottomNavBarController.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => Bottomnavbarcontroller()),
       ],
-      child: const MyApp(),
+      child: MyApp(),
     ),
   );
 }
@@ -20,12 +28,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Raseeni',
+      title: 'Rasseni',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        scaffoldBackgroundColor: appStyles.whiteColor,
         fontFamily: 'IBM Plex Sans',
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: BottomNavBar(),
     );
   }
 }
