@@ -14,47 +14,68 @@ class appStyles {
   //Text Style
   static const TextStyle headlineBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 28,
+    fontSize: 38,
     fontWeight: FontWeight.w700,
-    color: Color(0xff050505),
+    color: blackColor,
   );
-  static const TextStyle headlineWhhite = TextStyle(
+  static const TextStyle headlineWhite = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 28,
+    fontSize: 38,
     fontWeight: FontWeight.w700,
-    color: Color(0xffF7F9F8),
+    color: whiteColor,
   );
+  // static const TextStyle numberWhite = TextStyle(
+  //   fontFamily: 'IBM Plex Sans',
+  //   fontSize: 38,
+  //   fontWeight: FontWeight.w700,
+  //   color: Color(0xffFDC613),
+  //   letterSpacing: -2,
+  //   shadows: [
+  //     Shadow(
+  //       offset: Offset(0, 4),
+  //       blurRadius: 4,
+  //       color: Color(0xffB9BBBA),
+  //     ),
+  //   ],
+  // );
 
   static const TextStyle titleBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 22,
-    fontWeight: FontWeight.w500,
-    color: Color(0xff050505),
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    color: blackColor,
   );
 
   static const TextStyle titleWhite = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 22,
-    fontWeight: FontWeight.w500,
-    color: Color(0xff050505),
+    fontSize: 28,
+    fontWeight: FontWeight.w700,
+    color: whiteColor,
   );
 
   static const TextStyle subTitleWhite = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: FontWeight.w400,
     color: Color(0xffF7F9F8),
   );
 
   static const TextStyle subTitleBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: FontWeight.w400,
     color: Color(0xff050505),
   );
 
   // images
-  static const String logo = 'assets/images/logo/Rasseni-removebg-preview.png';
+  static const String logoWithoutBackground =
+      'assets/images/logo/Rasseni-removebg-preview.png';
+  static const String logoWhithBackground =
+      'assets/images/logo/Rasseni-removebg-preview-white.png';
+  static const String mobileDevIcon =
+      'assets/images/courses logo/mobile dev.png';
+  static const String webDevIcon = 'assets/images/courses logo/web dev.png';
+  static const String python = 'assets/images/courses logo/python.png';
 
   //Icons
   static const IconData home = Icons.home_filled;
@@ -63,9 +84,8 @@ class appStyles {
   static const IconData logout = Icons.logout_rounded;
   static const IconData chat = Icons.chat_rounded;
   static const IconData search = Icons.search_rounded;
-  static const IconData notification_active =
-      Icons.notifications_active_rounded;
-  static const IconData notification_none = Icons.notifications_none_rounded;
+  static const IconData notificationActive = Icons.notifications_active_rounded;
+  static const IconData notificationNone = Icons.notifications_none_rounded;
   static const IconData menu = Icons.menu_rounded;
   static const IconData add = Icons.add_rounded;
   static const IconData edit = Icons.edit_rounded;
