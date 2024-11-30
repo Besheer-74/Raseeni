@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -27,6 +28,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: appStyles.blueColor, // Change to your app bar color
+        statusBarIconBrightness: Brightness.light, // Set to light or dark
+      ),
+    );
     return MaterialApp(
       title: 'Rasseni',
       debugShowCheckedModeBanner: false,

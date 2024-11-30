@@ -9,9 +9,9 @@ class Homescreen extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> courses = [
       {
-        'title': 'Mobile Dev',
+        'title': 'Flutter',
         'subtitle': 'Master Class',
-        'image': appStyles.mobileDevIcon,
+        'image': appStyles.flutter,
         'progress': 15,
         'color': appStyles.roseColor,
       },
@@ -23,23 +23,23 @@ class Homescreen extends StatelessWidget {
         'color': appStyles.blueColor,
       },
       {
-        'title': 'Java',
+        'title': 'React',
         'subtitle': 'Master Class',
-        'image': appStyles.webDevIcon,
+        'image': appStyles.react,
         'progress': 45,
         'color': appStyles.indigoColor,
       },
       {
-        'title': 'Web dev',
+        'title': 'Html',
         'subtitle': 'Master Class',
-        'image': appStyles.webDevIcon,
+        'image': appStyles.html,
         'progress': 45,
         'color': appStyles.orangeColor,
       },
       {
-        'title': 'kotlin dev',
+        'title': 'C++',
         'subtitle': 'Master Class',
-        'image': appStyles.webDevIcon,
+        'image': appStyles.cPlusPlus,
         'progress': 5,
         'color': appStyles.greenColor,
       },
@@ -218,7 +218,7 @@ class Homescreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text('Web dev',
+                                      Text('Dart',
                                           style: appStyles.titleBlackBold),
                                       Text('Master Class',
                                           style: appStyles.smallTitleBlack),
@@ -227,7 +227,7 @@ class Homescreen extends StatelessWidget {
                                   SizedBox(
                                     height: height * 0.1,
                                     width: width * 0.5,
-                                    child: Image.asset(appStyles.webDevIcon),
+                                    child: Image.asset(appStyles.dart),
                                   ),
                                 ],
                               ),
@@ -352,7 +352,7 @@ class Homescreen extends StatelessWidget {
                     height: height * 0.09,
                     width: width * 0.09,
                     child: Image.asset(
-                      appStyles.python,
+                      image,
                     ),
                   ),
                 ),
@@ -393,28 +393,3 @@ class Homescreen extends StatelessWidget {
     );
   }
 }
-/**
- Card(
-                              elevation: 10,
-                              color: appStyles.grayColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(35),
-                              ),
-                              child: Center(
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.add,
-                                      size: 40,
-                                      color: appStyles.whiteColor,
-                                    ),
-                                    Text(
-                                      'Add Course',
-                                      style: appStyles.subTitleWhite,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
- */
