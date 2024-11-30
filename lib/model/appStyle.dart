@@ -10,6 +10,7 @@ class appStyles {
   static const Color indigoColor = Color(0xff6338FE);
   static const Color whiteColor = Color(0xffF7F9F8);
   static const Color blackColor = Color(0xff050505);
+  static const Color grayColor = Color(0xffE8E7EF);
 
   //Text Style
   static const TextStyle headlineBlack = TextStyle(
@@ -24,47 +25,58 @@ class appStyles {
     fontWeight: FontWeight.w700,
     color: whiteColor,
   );
-  // static const TextStyle numberWhite = TextStyle(
-  //   fontFamily: 'IBM Plex Sans',
-  //   fontSize: 38,
-  //   fontWeight: FontWeight.w700,
-  //   color: Color(0xffFDC613),
-  //   letterSpacing: -2,
-  //   shadows: [
-  //     Shadow(
-  //       offset: Offset(0, 4),
-  //       blurRadius: 4,
-  //       color: Color(0xffB9BBBA),
-  //     ),
-  //   ],
-  // );
-
   static const TextStyle titleBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
+    fontSize: 32,
+    fontWeight: FontWeight.w500,
+    color: blackColor,
+  );
+  static const TextStyle titleWhite = TextStyle(
+    fontFamily: 'IBM Plex Sans',
     fontSize: 28,
+    fontWeight: FontWeight.w500,
+    color: whiteColor,
+  );
+
+  static const TextStyle titleBlackBold = TextStyle(
+    fontFamily: 'IBM Plex Sans',
+    fontSize: 32,
     fontWeight: FontWeight.w700,
     color: blackColor,
   );
 
-  static const TextStyle titleWhite = TextStyle(
+  static const TextStyle titleWhiteBold = TextStyle(
     fontFamily: 'IBM Plex Sans',
     fontSize: 28,
     fontWeight: FontWeight.w700,
     color: whiteColor,
   );
 
-  static const TextStyle subTitleWhite = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: Color(0xffF7F9F8),
-  );
-
   static const TextStyle subTitleBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: blackColor,
+  );
+  static const TextStyle subTitleWhite = TextStyle(
+    fontFamily: 'IBM Plex Sans',
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    color: whiteColor,
+  );
+
+  static const TextStyle smallTitleWhite = TextStyle(
+    fontFamily: 'IBM Plex Sans',
     fontSize: 16,
     fontWeight: FontWeight.w400,
-    color: Color(0xff050505),
+    color: whiteColor,
+  );
+
+  static const TextStyle smallTitleBlack = TextStyle(
+    fontFamily: 'IBM Plex Sans',
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    color: blackColor,
   );
 
   // images
