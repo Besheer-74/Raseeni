@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-class appStyles {
+class AppStyles {
   //Color
   static const Color yellowColor = Color(0xffFDC613);
   static const Color blueColor = Color(0xff3C62DD);
+  static const Color maybeCyan = Color(0xff31AFD5);
   static const Color maybeBlueColor = Color(0xff004ffe);
   static const Color greenColor = Color(0xff00B232);
   static const Color orangeColor = Color(0xffFF7427);
@@ -11,78 +12,157 @@ class appStyles {
   static const Color indigoColor = Color(0xff6338FE);
   static const Color whiteColor = Color(0xffF7F9F8);
   static const Color blackColor = Color(0xff050505);
-  static const Color grayColor = Color(0xffE8E7EF);
-  static const Color darkGreyColor = Color(0xffBDBEBE);
+  static const Color grayColor = Color(0xffBDBEBE);
+  static const Color maybeGray = Color(0xffA6A9CB);
   static const Color redColor = Color(0xffC73E1C);
 
-// E7E8E8
-
   //Text Style
-  static const TextStyle headlineBlack = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 38,
-    fontWeight: FontWeight.w700,
-    color: blackColor,
-  );
-  static const TextStyle headlineWhite = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 38,
-    fontWeight: FontWeight.w700,
-    color: whiteColor,
-  );
-  static const TextStyle titleBlack = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 28,
-    fontWeight: FontWeight.w500,
-    color: blackColor,
-  );
-  static const TextStyle titleWhite = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 28,
-    fontWeight: FontWeight.w500,
-    color: whiteColor,
-  );
+  static TextStyle bold96(Color c) => TextStyle(
+      color: c,
+      fontSize: 96,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
 
-  static const TextStyle titleBlackBold = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 32,
-    fontWeight: FontWeight.w700,
-    color: blackColor,
-  );
+  static TextStyle bold64(Color c) => TextStyle(
+      color: c,
+      fontSize: 64,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold48(Color c) => TextStyle(
+      color: c,
+      fontSize: 48,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold40(Color c) => TextStyle(
+      color: c,
+      fontSize: 40,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold32(Color c) => TextStyle(
+      color: c,
+      fontSize: 32,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold24(Color c) => TextStyle(
+      color: c,
+      fontSize: 24,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold20(Color c) => TextStyle(
+      color: c,
+      fontSize: 20,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
+  static TextStyle bold15(Color c) => TextStyle(
+      color: c,
+      fontSize: 15,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
 
-  static const TextStyle titleWhiteBold = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 28,
-    fontWeight: FontWeight.w700,
-    color: whiteColor,
-  );
+  static TextStyle bold12(Color c) => TextStyle(
+      color: c,
+      fontSize: 12,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w700);
 
-  static const TextStyle subTitleBlack = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-    color: blackColor,
-  );
-  static const TextStyle subTitleWhite = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 20,
-    fontWeight: FontWeight.w500,
-    color: whiteColor,
-  );
+  static TextStyle semiBold36(Color c) => TextStyle(
+      color: c,
+      fontSize: 36,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
+  static TextStyle semiBold32(Color c) => TextStyle(
+      color: c,
+      fontSize: 32,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
+  static TextStyle semiBold24(Color c) => TextStyle(
+      color: c,
+      fontSize: 24,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
+  static TextStyle semiBold20(Color c) => TextStyle(
+      color: c,
+      fontSize: 20,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
+  static TextStyle semiBold16(Color c) => TextStyle(
+      color: c,
+      fontSize: 16,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
+  static TextStyle semiBold12(Color c) => TextStyle(
+      color: c,
+      fontSize: 12,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w600);
 
-  static const TextStyle smallTitleWhite = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: whiteColor,
-  );
+  static TextStyle regular32(Color c) => TextStyle(
+      color: c,
+      fontSize: 32,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
+  static TextStyle regular24(Color c) => TextStyle(
+      color: c,
+      fontSize: 24,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
+  static TextStyle regular20(Color c) => TextStyle(
+      color: c,
+      fontSize: 20,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
+  static TextStyle regular16(Color c) => TextStyle(
+      color: c,
+      fontSize: 16,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
+  static TextStyle regular15(Color c) => TextStyle(
+      color: c,
+      fontSize: 15,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
+  static TextStyle regular14(Color c) => TextStyle(
+      color: c,
+      fontSize: 14,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w400);
 
-  static const TextStyle smallTitleBlack = TextStyle(
-    fontFamily: 'IBM Plex Sans',
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: blackColor,
-  );
+  static TextStyle medium40(Color c) => TextStyle(
+      color: c,
+      fontSize: 40,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w500);
+  static TextStyle medium32(Color c) => TextStyle(
+      color: c,
+      fontSize: 32,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w500);
+  static TextStyle medium24(Color c) => TextStyle(
+      color: c,
+      fontSize: 24,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w500);
+  static TextStyle medium20(Color c) => TextStyle(
+      color: c,
+      fontSize: 20,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w500);
+  static TextStyle medium16(Color c) => TextStyle(
+      color: c,
+      fontSize: 16,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w500);
+
+  static TextStyle light24(Color c) => TextStyle(
+      color: c,
+      fontSize: 24,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w300);
+  static TextStyle light20(Color c) => TextStyle(
+      color: c,
+      fontSize: 20,
+      fontFamily: 'IBM Plex Sans',
+      fontWeight: FontWeight.w300);
 
   // images
   static const String logoWithoutBackground =

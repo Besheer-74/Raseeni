@@ -54,7 +54,7 @@ class _ViewChatScreenState extends State<ViewChatScreen> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.1,
       decoration: const BoxDecoration(
-        color: appStyles.blueColor,
+        color: AppStyles.blueColor,
         borderRadius: BorderRadius.only(
           bottomLeft: Radius.circular(20),
           bottomRight: Radius.circular(20),
@@ -67,14 +67,12 @@ class _ViewChatScreenState extends State<ViewChatScreen> {
               // Handle back navigation
             },
             icon: Icon(
-              appStyles.back,
-              color: appStyles.whiteColor,
+              AppStyles.back,
+              color: AppStyles.whiteColor,
             ),
           ),
-          const Text(
-            "Web dev Community",
-            style: appStyles.titleWhite,
-          ),
+          Text("Web dev Community",
+              style: AppStyles.regular32(AppStyles.blackColor)),
         ],
       ),
     );
@@ -165,7 +163,7 @@ class MessageInputField extends StatelessWidget {
               height: 45,
               width: 45,
               decoration: BoxDecoration(
-                color: appStyles.blueColor,
+                color: AppStyles.blueColor,
                 shape: BoxShape.circle,
               ),
               child: const Icon(

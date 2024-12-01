@@ -31,7 +31,7 @@ class ViewDashboardScreen extends StatelessWidget {
               width: double.infinity,
               height: height * .09,
               decoration: BoxDecoration(
-                color: appStyles.blueColor,
+                color: AppStyles.blueColor,
                 borderRadius: BorderRadius.only(
                   bottomRight: Radius.circular(35),
                   bottomLeft: Radius.circular(35),
@@ -47,20 +47,18 @@ class ViewDashboardScreen extends StatelessWidget {
                         IconButton(
                             onPressed: () {},
                             icon: Icon(
-                              appStyles.back,
-                              color: appStyles.whiteColor,
+                              AppStyles.back,
+                              color: AppStyles.whiteColor,
                             )),
-                        Text(
-                          "Soft Skills",
-                          style: appStyles.titleWhite,
-                        ),
+                        Text("Soft Skills",
+                            style: AppStyles.regular32(AppStyles.blackColor)),
                       ],
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.only(right: width * 0.05),
                     child: Image.asset(
-                      appStyles.skills,
+                      AppStyles.skills,
                     ),
                   ),
                 ],
@@ -99,7 +97,7 @@ class ViewDashboardScreen extends StatelessWidget {
       height: height * 0.25,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(35),
-        color: Colors.grey[300],
+        color: AppStyles.grayColor,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
@@ -108,7 +106,7 @@ class ViewDashboardScreen extends StatelessWidget {
             width: double.infinity,
             height: height * 0.06,
             decoration: const BoxDecoration(
-              color: appStyles.indigoColor,
+              color: AppStyles.indigoColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(35),
                 bottomRight: Radius.circular(35),
@@ -120,7 +118,7 @@ class ViewDashboardScreen extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 child: Text(
                   title,
-                  style: appStyles.subTitleWhite,
+                  style: AppStyles.medium16(AppStyles.indigoColor),
                 ),
               ),
             ),

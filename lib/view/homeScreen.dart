@@ -11,37 +11,37 @@ class Homescreen extends StatelessWidget {
       {
         'title': 'Flutter',
         'subtitle': 'Master Class',
-        'image': appStyles.flutter,
+        'image': AppStyles.flutter,
         'progress': 15,
-        'color': appStyles.roseColor,
+        'color': AppStyles.roseColor,
       },
       {
         'title': 'Python',
         'subtitle': 'Master Class',
-        'image': appStyles.python,
+        'image': AppStyles.python,
         'progress': 45,
-        'color': appStyles.blueColor,
+        'color': AppStyles.blueColor,
       },
       {
         'title': 'React',
         'subtitle': 'Master Class',
-        'image': appStyles.react,
+        'image': AppStyles.react,
         'progress': 45,
-        'color': appStyles.indigoColor,
+        'color': AppStyles.indigoColor,
       },
       {
         'title': 'Html',
         'subtitle': 'Master Class',
-        'image': appStyles.html,
+        'image': AppStyles.html,
         'progress': 45,
-        'color': appStyles.orangeColor,
+        'color': AppStyles.orangeColor,
       },
       {
         'title': 'C++',
         'subtitle': 'Master Class',
-        'image': appStyles.cPlusPlus,
+        'image': AppStyles.cPlusPlus,
         'progress': 5,
-        'color': appStyles.greenColor,
+        'color': AppStyles.greenColor,
       },
     ];
 
@@ -69,7 +69,7 @@ class Homescreen extends StatelessWidget {
       width: double.infinity,
       height: height * .09,
       decoration: BoxDecoration(
-        color: appStyles.blueColor,
+        color: AppStyles.blueColor,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(35),
           bottomLeft: Radius.circular(35),
@@ -80,7 +80,7 @@ class Homescreen extends StatelessWidget {
           Align(
             alignment: Alignment.center,
             child: Image.asset(
-              appStyles.logoWithoutBackground,
+              AppStyles.logoWithoutBackground,
             ),
           ),
           Positioned(
@@ -89,8 +89,8 @@ class Homescreen extends StatelessWidget {
             child: IconButton(
               onPressed: () {},
               icon: Icon(
-                appStyles.notificationNone,
-                color: appStyles.whiteColor,
+                AppStyles.notificationNone,
+                color: AppStyles.whiteColor,
               ),
             ),
           ),
@@ -107,7 +107,7 @@ class Homescreen extends StatelessWidget {
         width: double.infinity,
         height: height * .09,
         decoration: BoxDecoration(
-          color: appStyles.orangeColor,
+          color: AppStyles.orangeColor,
           borderRadius: BorderRadius.circular(35),
         ),
         child: Padding(
@@ -115,12 +115,12 @@ class Homescreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Streak", style: appStyles.titleWhite),
+              Text("Streak", style: AppStyles.regular24(AppStyles.whiteColor)),
               Row(
                 children: [
-                  Text('4', style: appStyles.headlineWhite),
+                  Text('4', style: AppStyles.bold32(AppStyles.whiteColor)),
                   SizedBox(width: 4),
-                  Icon(Icons.whatshot, color: appStyles.whiteColor, size: 35),
+                  Icon(Icons.whatshot, color: AppStyles.whiteColor, size: 35),
                 ],
               ),
             ],
@@ -153,7 +153,7 @@ class Homescreen extends StatelessWidget {
       double width, double height, double progressPercentage) {
     return Card(
       elevation: 20,
-      color: appStyles.yellowColor,
+      color: AppStyles.yellowColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(35),
       ),
@@ -177,20 +177,12 @@ class Homescreen extends StatelessWidget {
                         value: progressPercentage / 100,
                         strokeWidth: 20,
                         valueColor:
-                            AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
-                        backgroundColor: appStyles.blackColor,
+                            AlwaysStoppedAnimation<Color>(AppStyles.whiteColor),
+                        backgroundColor: AppStyles.blackColor,
                       ),
                       Center(
-                        child: Text(
-                          '${progressPercentage.toInt()}',
-                          style: TextStyle(
-                            fontFamily: 'IBM Plex Sans',
-                            fontSize: 38,
-                            fontWeight: FontWeight.w700,
-                            color: appStyles.whiteColor,
-                            letterSpacing: -2,
-                          ),
-                        ),
+                        child: Text('${progressPercentage.toInt()}',
+                            style: AppStyles.bold48(AppStyles.whiteColor)),
                       ),
                     ],
                   ),
@@ -199,14 +191,17 @@ class Homescreen extends StatelessWidget {
                   height: height * 0.05,
                   width: width * 0.25,
                   decoration: BoxDecoration(
-                    color: appStyles.indigoColor,
+                    color: AppStyles.indigoColor,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       bottomLeft: Radius.circular(35),
                     ),
                   ),
                   child: Center(
-                    child: Text("Continue", style: appStyles.smallTitleWhite),
+                    child: Text("Continue",
+                        style: AppStyles.bold12(
+                          AppStyles.whiteColor,
+                        )),
                   ),
                 ),
               ],
@@ -218,14 +213,14 @@ class Homescreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Dart', style: appStyles.titleBlackBold),
-                    Text('Master Class', style: appStyles.smallTitleBlack),
+                    Text('Dart', style: AppStyles.bold32(AppStyles.blackColor)),
+                    Text('Master Class',
+                        style: AppStyles.regular32(AppStyles.blackColor)),
                   ],
                 ),
                 SizedBox(
                   height: height * 0.1,
-                  width: width * 0.5,
-                  child: Image.asset(appStyles.dart),
+                  child: Image.asset(AppStyles.dart),
                 ),
               ],
             ),
@@ -296,26 +291,18 @@ class Homescreen extends StatelessWidget {
                     value: 1.0,
                     strokeWidth: 10,
                     valueColor:
-                        AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
+                        AlwaysStoppedAnimation<Color>(AppStyles.whiteColor),
                   ),
                   CircularProgressIndicator(
                     strokeCap: StrokeCap.round,
                     value: progressPercentage / 100,
                     strokeWidth: 10,
-                    valueColor: AlwaysStoppedAnimation(appStyles.whiteColor),
-                    backgroundColor: appStyles.blackColor,
+                    valueColor: AlwaysStoppedAnimation(AppStyles.whiteColor),
+                    backgroundColor: AppStyles.blackColor,
                   ),
                   Center(
-                    child: Text(
-                      '${progressPercentage.toInt()}',
-                      style: TextStyle(
-                        fontFamily: 'IBM Plex Sans',
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: appStyles.whiteColor,
-                        letterSpacing: -2,
-                      ),
-                    ),
+                    child: Text('${progressPercentage.toInt()}',
+                        style: AppStyles.bold24(AppStyles.whiteColor)),
                   ),
                 ],
               ),
@@ -326,8 +313,9 @@ class Homescreen extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title, style: appStyles.subTitleWhite),
-                    Text(subtitle, style: appStyles.smallTitleWhite),
+                    Text(title, style: AppStyles.bold15(AppStyles.whiteColor)),
+                    Text(subtitle,
+                        style: AppStyles.regular15(AppStyles.whiteColor)),
                   ],
                 ),
                 Spacer(),
@@ -350,7 +338,7 @@ class Homescreen extends StatelessWidget {
   Widget _addCard(double height, double width) {
     return Card(
       elevation: 10,
-      color: appStyles.grayColor,
+      color: AppStyles.grayColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(35),
       ),
@@ -358,8 +346,12 @@ class Homescreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.add, size: 40, color: appStyles.whiteColor),
-            Text('Add Course', style: appStyles.subTitleWhite),
+            Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.add, size: 40, color: AppStyles.whiteColor)),
+            Text('Add Course', style: AppStyles.bold15(AppStyles.grayColor)),
           ],
         ),
       ),

@@ -14,37 +14,37 @@ class DoneCourses extends StatelessWidget {
       {
         'title': 'Java',
         'subtitle': 'Master Class',
-        'image': appStyles.java,
+        'image': AppStyles.java,
         'progress': 100,
-        'color': appStyles.greenColor,
+        'color': AppStyles.greenColor,
       },
       {
         'title': 'Java Script',
         'subtitle': 'Master Class',
-        'image': appStyles.js,
+        'image': AppStyles.js,
         'progress': 100,
-        'color': appStyles.blueColor,
+        'color': AppStyles.blueColor,
       },
       {
         'title': 'Kotlin',
         'subtitle': 'Master Class',
-        'image': appStyles.kotlin,
+        'image': AppStyles.kotlin,
         'progress': 100,
-        'color': appStyles.roseColor,
+        'color': AppStyles.roseColor,
       },
       {
         'title': 'CSS',
         'subtitle': 'Master Class',
-        'image': appStyles.css,
+        'image': AppStyles.css,
         'progress': 100,
-        'color': appStyles.orangeColor,
+        'color': AppStyles.orangeColor,
       },
       {
         'title': 'C#',
         'subtitle': 'Master Class',
-        'image': appStyles.csharp,
+        'image': AppStyles.csharp,
         'progress': 100,
-        'color': appStyles.greenColor,
+        'color': AppStyles.greenColor,
       },
     ];
 
@@ -88,7 +88,7 @@ class DoneCourses extends StatelessWidget {
       width: double.infinity,
       height: height * .09,
       decoration: BoxDecoration(
-        color: appStyles.greenColor,
+        color: AppStyles.greenColor,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(35),
           bottomLeft: Radius.circular(35),
@@ -106,13 +106,11 @@ class DoneCourses extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     icon: Icon(
-                      appStyles.back,
-                      color: appStyles.whiteColor,
+                      AppStyles.back,
+                      color: AppStyles.whiteColor,
                     )),
-                Text(
-                  "Done Courses",
-                  style: appStyles.titleWhite,
-                ),
+                Text("Done Courses",
+                    style: AppStyles.semiBold24(AppStyles.whiteColor)),
               ],
             ),
           ),
@@ -153,8 +151,8 @@ Widget _coursesDoneCard(double height, double width, int progressPercentage,
                       value: progressPercentage / 100,
                       strokeWidth: 20,
                       valueColor:
-                          AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
-                      backgroundColor: appStyles.blackColor,
+                          AlwaysStoppedAnimation<Color>(AppStyles.whiteColor),
+                      backgroundColor: AppStyles.blackColor,
                     ),
                     Center(
                       child: Text(
@@ -163,7 +161,7 @@ Widget _coursesDoneCard(double height, double width, int progressPercentage,
                           fontFamily: 'IBM Plex Sans',
                           fontSize: 38,
                           fontWeight: FontWeight.w700,
-                          color: appStyles.whiteColor,
+                          color: AppStyles.whiteColor,
                           letterSpacing: -2,
                         ),
                       ),
@@ -180,8 +178,9 @@ Widget _coursesDoneCard(double height, double width, int progressPercentage,
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: appStyles.titleWhiteBold),
-                  Text(subtitle, style: appStyles.subTitleWhite),
+                  Text(title, style: AppStyles.bold24(AppStyles.whiteColor)),
+                  Text(subtitle,
+                      style: AppStyles.regular24(AppStyles.whiteColor)),
                 ],
               ),
               SizedBox(

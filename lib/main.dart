@@ -8,8 +8,7 @@ import 'firebase_options.dart';
 import 'view/bottomNavBar.dart';
 import 'model/appStyle.dart';
 import 'controller/bottomNavBarController.dart';
-import 'view/view_chat_screen.dart';
-import 'view/view_dashboard_screen.dart';
+
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,15 +33,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       SystemUiOverlayStyle(
-        statusBarColor: appStyles.blueColor, // Change to your app bar color
-        statusBarIconBrightness: Brightness.light, // Set to light or dark
+        statusBarColor: AppStyles.blueColor, // Change to your app bar color
+        statusBarIconBrightness: Brightness.light, 
       ),
     );
     return MaterialApp(
       title: 'Rasseni',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        scaffoldBackgroundColor: appStyles.whiteColor,
+        scaffoldBackgroundColor: AppStyles.whiteColor,
         fontFamily: 'IBM Plex Sans',
         useMaterial3: true,
       ),

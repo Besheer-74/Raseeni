@@ -38,7 +38,7 @@ class BottomNavBar extends StatelessWidget {
                 child: Container(
                   height: height * 0.06,
                   decoration: BoxDecoration(
-                    color: appStyles.whiteColor.withOpacity(0.5),
+                    color: AppStyles.whiteColor.withOpacity(0.5),
                     borderRadius: BorderRadius.only(
                         topLeft: Radius.circular(20),
                         topRight: Radius.circular(20)),
@@ -46,11 +46,11 @@ class BottomNavBar extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      _buildIcon(appStyles.home, 0, _bottomNavBarController),
-                      _buildIcon(appStyles.chat, 1, _bottomNavBarController),
+                      _buildIcon(AppStyles.home, 0, _bottomNavBarController),
+                      _buildIcon(AppStyles.chat, 1, _bottomNavBarController),
                       _buildIcon(
-                          appStyles.dashboard, 2, _bottomNavBarController),
-                      _buildIcon(appStyles.profile, 3, _bottomNavBarController),
+                          AppStyles.dashboard, 2, _bottomNavBarController),
+                      _buildIcon(AppStyles.profile, 3, _bottomNavBarController),
                     ],
                   ),
                 ),
@@ -69,8 +69,8 @@ class BottomNavBar extends StatelessWidget {
       child: Icon(
         icon,
         color: controller.currentIndex == index
-            ? appStyles.indigoColor
-            : appStyles.blackColor,
+            ? AppStyles.indigoColor
+            : AppStyles.blackColor,
       ),
     );
   }

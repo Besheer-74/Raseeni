@@ -7,19 +7,19 @@ class Dashboardscreen extends StatelessWidget {
   final List<Map<String, dynamic>> explore = [
     {
       'title': 'Soft Skill',
-      'icon': appStyles.skills,
+      'icon': AppStyles.skills,
     },
     {
       'title': 'Project Ideas',
-      'icon': appStyles.project,
+      'icon': AppStyles.project,
     },
     {
       'title': 'About Hardware',
-      'icon': appStyles.hardware,
+      'icon': AppStyles.hardware,
     },
     {
       'title': 'Software Trends',
-      'icon': appStyles.trends,
+      'icon': AppStyles.trends,
     },
   ];
 
@@ -27,17 +27,17 @@ class Dashboardscreen extends StatelessWidget {
     {
       'title': 'Git',
       'subtitle': 'Commandes',
-      'icon': appStyles.git,
+      'icon': AppStyles.git,
     },
     {
       'title': 'Main',
       'subtitle': 'References',
-      'icon': appStyles.main,
+      'icon': AppStyles.main,
     },
     {
       'title': 'Coding',
       'subtitle': 'References',
-      'icon': appStyles.coding,
+      'icon': AppStyles.coding,
     },
   ];
 
@@ -71,7 +71,7 @@ class Dashboardscreen extends StatelessWidget {
       width: double.infinity,
       height: height * .09,
       decoration: BoxDecoration(
-        color: appStyles.blueColor,
+        color: AppStyles.blueColor,
         borderRadius: BorderRadius.only(
           bottomRight: Radius.circular(35),
           bottomLeft: Radius.circular(35),
@@ -81,7 +81,7 @@ class Dashboardscreen extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Image.asset(appStyles.logoWithoutBackground),
+            child: Image.asset(AppStyles.logoWithoutBackground),
           ),
           Positioned(
             right: 16,
@@ -89,8 +89,8 @@ class Dashboardscreen extends StatelessWidget {
             child: IconButton(
               onPressed: () {},
               icon: Icon(
-                appStyles.notificationNone,
-                color: appStyles.whiteColor,
+                AppStyles.notificationNone,
+                color: AppStyles.whiteColor,
               ),
             ),
           ),
@@ -105,7 +105,7 @@ class Dashboardscreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Container(
         decoration: BoxDecoration(
-          color: appStyles.whiteColor,
+          color: AppStyles.whiteColor,
           borderRadius: BorderRadius.circular(35),
         ),
         child: Padding(
@@ -147,8 +147,8 @@ class Dashboardscreen extends StatelessWidget {
                 value: progressPercentage / 100,
                 strokeWidth: 20,
                 valueColor:
-                    AlwaysStoppedAnimation<Color>(appStyles.yellowColor),
-                backgroundColor: appStyles.blackColor,
+                    AlwaysStoppedAnimation<Color>(AppStyles.yellowColor),
+                backgroundColor: AppStyles.blackColor,
               ),
               Center(
                 child: Text(
@@ -157,7 +157,7 @@ class Dashboardscreen extends StatelessWidget {
                     fontFamily: 'IBM Plex Sans',
                     fontSize: 38,
                     fontWeight: FontWeight.w700,
-                    color: appStyles.yellowColor,
+                    color: AppStyles.yellowColor,
                     letterSpacing: -2,
                   ),
                 ),
@@ -169,8 +169,9 @@ class Dashboardscreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Web dev', style: appStyles.subTitleBlack),
-            Text('Master Class', style: appStyles.subTitleBlack),
+            Text('Web dev', style: AppStyles.bold20(AppStyles.blackColor)),
+            Text('Master Class',
+                style: AppStyles.regular20(AppStyles.blackColor)),
           ],
         ),
       ],
@@ -182,10 +183,10 @@ class Dashboardscreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildProgressIndicatorWithColor(
-            70, 50, appStyles.indigoColor, appStyles.blackColor),
+            70, 50, AppStyles.indigoColor, AppStyles.blackColor),
         SizedBox(height: height * 0.04),
         _buildProgressIndicatorWithColor(
-            20, 50, appStyles.greenColor, appStyles.blackColor),
+            20, 50, AppStyles.greenColor, AppStyles.blackColor),
       ],
     );
   }
@@ -227,8 +228,10 @@ class Dashboardscreen extends StatelessWidget {
           children: [
             Align(
                 alignment: Alignment.topLeft,
-                child: Text('Web dev', style: appStyles.subTitleBlack)),
-            Text('Master Class', style: appStyles.subTitleBlack),
+                child: Text('Web dev',
+                    style: AppStyles.bold15(AppStyles.blackColor))),
+            Text('Master Class',
+                style: AppStyles.regular15(AppStyles.blackColor)),
           ],
         ),
       ],
@@ -245,11 +248,12 @@ class Dashboardscreen extends StatelessWidget {
             width: width * .5,
             height: height * 0.06,
             decoration: BoxDecoration(
-              color: appStyles.orangeColor,
+              color: AppStyles.orangeColor,
               borderRadius: BorderRadius.circular(35),
             ),
             child: Center(
-              child: Text("View All", style: appStyles.subTitleWhite),
+              child: Text("View All",
+                  style: AppStyles.bold15(AppStyles.whiteColor)),
             ),
           ),
         ),
@@ -262,7 +266,7 @@ class Dashboardscreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(title, style: appStyles.titleBlack),
+        child: Text(title, style: AppStyles.light24(AppStyles.whiteColor)),
       ),
     );
   }
@@ -310,7 +314,7 @@ class Dashboardscreen extends StatelessWidget {
       onTap: () {},
       child: Card(
         elevation: 5,
-        color: appStyles.indigoColor,
+        color: AppStyles.indigoColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35),
         ),
@@ -325,7 +329,8 @@ class Dashboardscreen extends StatelessWidget {
                 Align(alignment: Alignment.topLeft, child: Image.asset(icon)),
                 Align(
                   alignment: Alignment.bottomRight,
-                  child: Text(title, style: appStyles.subTitleWhite),
+                  child: Text(title,
+                      style: AppStyles.regular16(AppStyles.whiteColor)),
                 ),
               ],
             ),
@@ -341,7 +346,7 @@ class Dashboardscreen extends StatelessWidget {
       onTap: () {},
       child: Card(
         elevation: 5,
-        color: appStyles.blackColor,
+        color: AppStyles.blackColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(35),
         ),
@@ -362,8 +367,10 @@ class Dashboardscreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(title, style: appStyles.subTitleWhite),
-                      Text(subtitle, style: appStyles.subTitleWhite),
+                      Text(title,
+                          style: AppStyles.semiBold20(AppStyles.whiteColor)),
+                      Text(subtitle,
+                          style: AppStyles.light20(AppStyles.whiteColor)),
                     ],
                   ),
                 ),
