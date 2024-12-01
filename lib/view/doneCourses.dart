@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/appStyle.dart';
+import 'bottomNavBar.dart';
 import 'profileScreen.dart';
 
 class DoneCourses extends StatelessWidget {
@@ -44,7 +45,7 @@ class DoneCourses extends StatelessWidget {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => Profilescreen()));
+                                builder: (context) => BottomNavBar()));
                       },
                       child: Icon(
                         Icons.arrow_back_ios,
