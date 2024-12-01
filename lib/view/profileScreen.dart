@@ -17,7 +17,7 @@ class Profilescreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: height * .1,
+            height: height * .09,
             decoration: BoxDecoration(
               color: appStyles.blueColor,
             ),
@@ -30,9 +30,9 @@ class Profilescreen extends StatelessWidget {
                 Positioned(
                   right: 16,
                   top: 16,
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Icon(
+                  child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
                       appStyles.notificationNone,
                       color: appStyles.whiteColor,
                     ),
@@ -46,15 +46,7 @@ class Profilescreen extends StatelessWidget {
               height: height * 0.79,
               width: double.infinity,
               decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: appStyles.blackColor.withOpacity(0.5),
-                      spreadRadius: 2,
-                      blurRadius: 8,
-                      offset: Offset(0, -3),
-                    ),
-                  ],
-                  color: Colors.white,
+                  color: appStyles.whiteColor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(35),
                       topRight: Radius.circular(35))),
@@ -101,40 +93,44 @@ class Profilescreen extends StatelessWidget {
                         left: 25,
                         top: 10,
                       ),
-                      child: Row(
-                        children: [
-                          Icon(
-                            Icons.badge,
-                            size: 50,
-                            color: appStyles.blueColor,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Ahlan,',
-                                style: appStyles.subTitleBlack,
-                              ),
-                              Text(
-                                'HIsOkA',
-                                style: TextStyle(fontSize: 16),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Icon(
-                              Icons.edit,
+                      child: Padding(
+                        padding: EdgeInsets.only(),
+                        child: Row(
+                          children: [
+                            Icon(
+                              appStyles.badge,
+                              size: 40,
                               color: appStyles.blueColor,
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              width: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Ahlan,',
+                                  style: appStyles.titleBlackBold,
+                                ),
+                                Text(
+                                  'Abdelarahman Abdelrahman',
+                                  style: appStyles.smallTitleBlack,
+                                ),
+                              ],
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: EdgeInsets.only(right: width * .06),
+                              child: GestureDetector(
+                                onTap: () {},
+                                child: Icon(
+                                  appStyles.edit,
+                                  color: appStyles.blueColor,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     SizedBox(height: height * 0.01),
@@ -191,7 +187,7 @@ class Profilescreen extends StatelessWidget {
                       padding: EdgeInsets.only(
                           right: width * 0.03, left: width * 0.03),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           GestureDetector(
                             onTap: () {},
@@ -234,8 +230,7 @@ class Profilescreen extends StatelessWidget {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          DoneCourses(context)));
+                                      builder: (context) => DoneCourses()));
                             },
                             child: Container(
                               height: height * 0.1,
@@ -259,7 +254,7 @@ class Profilescreen extends StatelessWidget {
                                         style: appStyles.subTitleWhite,
                                       ),
                                       Icon(
-                                        Icons.check,
+                                        appStyles.done,
                                         color: appStyles.whiteColor,
                                       )
                                     ],

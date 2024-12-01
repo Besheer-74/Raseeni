@@ -54,7 +54,7 @@ class Homescreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(context),
+            _buildAppBar(height),
             _buildStreakCard(width, height),
             SizedBox(height: height * 0.01),
             _buildScrollableContent(width, height, courses, progressPercentage),
@@ -64,10 +64,10 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(BuildContext context) {
+  Widget _buildAppBar(double height) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * .09,
+      height: height * .09,
       decoration: BoxDecoration(
         color: appStyles.blueColor,
         borderRadius: BorderRadius.only(
@@ -79,7 +79,9 @@ class Homescreen extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Image.asset(appStyles.logoWithoutBackground),
+            child: Image.asset(
+              appStyles.logoWithoutBackground,
+            ),
           ),
           Positioned(
             right: 16,
@@ -99,7 +101,8 @@ class Homescreen extends StatelessWidget {
 
   Widget _buildStreakCard(double width, double height) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: width * 0.03, vertical: height * 0.01),
+      padding: EdgeInsets.symmetric(
+          horizontal: width * 0.03, vertical: height * 0.01),
       child: Container(
         width: double.infinity,
         height: height * .09,
@@ -127,7 +130,8 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScrollableContent(double width, double height, List<Map<String, dynamic>> courses, double progressPercentage) {
+  Widget _buildScrollableContent(double width, double height,
+      List<Map<String, dynamic>> courses, double progressPercentage) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -145,7 +149,8 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCard(double width, double height, double progressPercentage) {
+  Widget _buildProgressCard(
+      double width, double height, double progressPercentage) {
     return Card(
       elevation: 20,
       color: appStyles.yellowColor,
@@ -153,7 +158,8 @@ class Homescreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(35),
       ),
       child: Padding(
-        padding: EdgeInsets.only(left: width * 0.07, top: height * 0.03, bottom: height * 0.02),
+        padding: EdgeInsets.only(
+            left: width * 0.07, top: height * 0.03, bottom: height * 0.02),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -167,15 +173,11 @@ class Homescreen extends StatelessWidget {
                     fit: StackFit.expand,
                     children: [
                       CircularProgressIndicator(
-                        value: 1.0,
-                        strokeWidth: 12,
-                        valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
-                      ),
-                      CircularProgressIndicator(
                         strokeCap: StrokeCap.round,
                         value: progressPercentage / 100,
                         strokeWidth: 20,
-                        valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
                         backgroundColor: appStyles.blackColor,
                       ),
                       Center(
@@ -233,7 +235,8 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCourseGrid(double width, double height, List<Map<String, dynamic>> courses) {
+  Widget _buildCourseGrid(
+      double width, double height, List<Map<String, dynamic>> courses) {
     return Padding(
       padding: EdgeInsets.only(bottom: height * .06),
       child: GridView.builder(
@@ -265,7 +268,8 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _courseCard(double height, double width, String title, String subtitle, String image, int progressPercentage, Color color) {
+  Widget _courseCard(double height, double width, String title, String subtitle,
+      String image, int progressPercentage, Color color) {
     return Card(
       elevation: 10,
       color: color,
@@ -291,7 +295,8 @@ class Homescreen extends StatelessWidget {
                   CircularProgressIndicator(
                     value: 1.0,
                     strokeWidth: 10,
-                    valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
+                    valueColor:
+                        AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
                   ),
                   CircularProgressIndicator(
                     strokeCap: StrokeCap.round,
@@ -315,7 +320,7 @@ class Homescreen extends StatelessWidget {
                 ],
               ),
             ),
- Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(

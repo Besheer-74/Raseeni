@@ -136,4 +136,6 @@ class appStyles {
   static const IconData delete = Icons.delete_rounded;
   static const IconData save = Icons.save_rounded;
   static const IconData back = Icons.arrow_back_ios_rounded;
+  static const IconData done = Icons.done_rounded;
+  static const IconData badge = Icons.badge_rounded;
 }
