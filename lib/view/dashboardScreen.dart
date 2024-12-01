@@ -23,7 +23,23 @@ class Dashboardscreen extends StatelessWidget {
       'icon': appStyles.trends,
     },
   ];
-
+  List<Map<String, dynamic>> codingVocab = [
+    {
+      'title': 'Git',
+      'subtitle': 'Commandes',
+      'icon': appStyles.git,
+    },
+    {
+      'title': 'Main',
+      'subtitle': 'References',
+      'icon': appStyles.main,
+    },
+    {
+      'title': 'Coding',
+      'subtitle': 'References',
+      'icon': appStyles.coding,
+    },
+  ];
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -127,8 +143,10 @@ class Dashboardscreen extends StatelessWidget {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Text('Web dev',
-                                          style: appStyles.subTitleBlack),
+                                      Text(
+                                        'Web dev',
+                                        style: appStyles.subTitleBlack,
+                                      ),
                                       Text('Master Class',
                                           style: appStyles.subTitleBlack),
                                     ],
@@ -188,12 +206,18 @@ class Dashboardscreen extends StatelessWidget {
                       ),
                     ),
                   ),
+                  SizedBox(
+                    height: height * 0.01,
+                  ),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       "Explore",
                       style: appStyles.titleBlack,
                     ),
+                  ),
+                  SizedBox(
+                    height: height * 0.01,
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -203,43 +227,42 @@ class Dashboardscreen extends StatelessWidget {
                       itemCount: explore.length,
                       itemBuilder: (context, index) {
                         final _explore = explore[index];
-                        return Card(
-                          elevation: 10,
-                          color: appStyles.indigoColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(35),
-                          ),
-                          child: SizedBox(
-                            height: height * 0.14,
-                            width: width * 0.5,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: width * 0.04,
-                                top: height * 0.02,
-                                right: width * 0.04,
-                                bottom: height * 0.02,
-                              ),
-                              child: Stack(
-                                children: [
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Image.asset(_explore['icon']),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: Text(
-                                      _explore['title'],
-                                      style: appStyles.subTitleWhite,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
+                        return exploreCard(
+                          height,
+                          width,
+                          _explore['title'],
+                          _explore['icon'],
                         );
                       },
                     ),
-                  )
+                  ),
+                  SizedBox(
+                    height: height * .03,
+                  ),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Coding Vocab",
+                      style: appStyles.titleBlack,
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: height * .17,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: codingVocab.length,
+                      itemBuilder: (context, index) {
+                        final _codingVocab = codingVocab[index];
+                        return codingVocabCard(
+                            height,
+                            width,
+                            _codingVocab['title'],
+                            _codingVocab['subtitle'],
+                            _codingVocab['icon']);
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -296,6 +319,102 @@ class Dashboardscreen extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  Widget exploreCard(double height, double width, String title, String icon) {
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        elevation: 5,
+        color: appStyles.indigoColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: SizedBox(
+          height: height * 0.14,
+          width: width * 0.5,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: width * 0.04,
+              top: height * 0.02,
+              right: width * 0.04,
+              bottom: height * 0.02,
+            ),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Image.asset(icon),
+                ),
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    title,
+                    style: appStyles.subTitleWhite,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget codingVocabCard(
+      double height, double width, String title, String subtitle, String icon) {
+    return GestureDetector(
+      onTap: () {},
+      child: Card(
+        elevation: 5,
+        color: appStyles.blackColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: SizedBox(
+          height: height * 0.14,
+          width: width * 0.8,
+          child: Padding(
+            padding: EdgeInsets.only(
+              left: width * 0.04,
+              top: height * 0.02,
+              right: width * 0.04,
+              bottom: height * 0.02,
+            ),
+            child: Row(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Image.asset(
+                    icon,
+                  ),
+                ),
+                SizedBox(
+                  width: width * 0.02,
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        title,
+                        style: appStyles.subTitleWhite,
+                      ),
+                      Text(
+                        subtitle,
+                        style: appStyles.subTitleWhite,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

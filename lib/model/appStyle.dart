@@ -113,6 +113,9 @@ class appStyles {
   static const String skills = 'assets/images/icons/skills.png';
   static const String project = 'assets/images/icons/project.png';
   static const String hardware = 'assets/images/icons/hardware.png';
+  static const String git = 'assets/images/icons/git.png';
+  static const String coding = 'assets/images/icons/coding.png';
+  static const String main = 'assets/images/icons/main.png';
 
   //Icons
   static const IconData home = Icons.home_filled;
