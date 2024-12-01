@@ -29,9 +29,10 @@ flutter:
 
   assets:
     - assets/avaters/
-    - assets/images/icons/
+    - assets/images/
     - assets/images/logo/
     - assets/images/courses logo/
+    - assets/images/social media/
 
   fonts:
     - family: IBM Plex Sans
