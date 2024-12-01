@@ -27,10 +27,11 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/avaters/
+    - assets/avatar/
     - assets/images/
     - assets/images/logo/
     - assets/images/courses logo/
+    - assets/images/social media/
 
   fonts:
     - family: IBM Plex Sans

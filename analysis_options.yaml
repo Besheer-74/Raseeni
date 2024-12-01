@@ -12,7 +12,7 @@ analyzer:
     no_leading_underscores_for_local_identifiers: ignore
     prefer_const_constructors: ignore ignore ignore ignore ignore ignore ignore
     prefer_const_literals_to_create_immutables: ignore ignore ignore ignore
-include: package:flutter_lints/flutter.yaml
+# include: package:flutter_lints/flutter.yaml
 
 linter:
   # The lint rules applied to this project can be customized in the

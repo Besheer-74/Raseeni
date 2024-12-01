@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'view/bottomNavBar.dart';
 import 'model/appStyle.dart';
 import 'controller/bottomNavBarController.dart';
+import 'view/profileScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

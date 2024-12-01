@@ -11,6 +11,8 @@ class appStyles {
   static const Color whiteColor = Color(0xffF7F9F8);
   static const Color blackColor = Color(0xff050505);
   static const Color grayColor = Color(0xffE8E7EF);
+  static const Color darkGreyColor = Color(0xffBDBEBE);
+  static const Color redColor = Color(0xffC73E1C);
 
   //Text Style
   static const TextStyle headlineBlack = TextStyle(
