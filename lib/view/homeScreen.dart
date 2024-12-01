@@ -54,220 +54,178 @@ class Homescreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // App Bar
-            Container(
-              width: double.infinity,
-              height: height * .09,
-              decoration: BoxDecoration(
-                color: appStyles.blueColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(35),
-                  bottomLeft: Radius.circular(35),
-                ),
+            _buildAppBar(context),
+            _buildStreakCard(width, height),
+            SizedBox(height: height * 0.01),
+            _buildScrollableContent(width, height, courses, progressPercentage),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAppBar(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * .09,
+      decoration: BoxDecoration(
+        color: appStyles.blueColor,
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(35),
+          bottomLeft: Radius.circular(35),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(appStyles.logoWithoutBackground),
+          ),
+          Positioned(
+            right: 16,
+            top: 16,
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                appStyles.notificationNone,
+                color: appStyles.whiteColor,
               ),
-              child: Stack(
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStreakCard(double width, double height) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: width * 0.03, vertical: height * 0.01),
+      child: Container(
+        width: double.infinity,
+        height: height * .09,
+        decoration: BoxDecoration(
+          color: appStyles.orangeColor,
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * .07),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text("Streak", style: appStyles.titleWhite),
+              Row(
                 children: [
-                  Align(
-                    alignment: Alignment.center,
-                    child: Image.asset(appStyles.logoWithoutBackground),
-                  ),
-                  Positioned(
-                    right: 16,
-                    top: 16,
-                    child: IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        appStyles.notificationNone,
-                        color: appStyles.whiteColor,
-                      ),
-                    ),
-                  ),
+                  Text('4', style: appStyles.headlineWhite),
+                  SizedBox(width: 4),
+                  Icon(Icons.whatshot, color: appStyles.whiteColor, size: 35),
                 ],
               ),
-            ),
-            SizedBox(height: height * 0.01),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-              child: Container(
-                width: double.infinity,
-                height: height * .09,
-                decoration: BoxDecoration(
-                  color: appStyles.orangeColor,
-                  borderRadius: BorderRadius.circular(35),
-                ),
-                child: Padding(
-                  padding:
-                      EdgeInsets.only(left: width * .07, right: width * .07),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildScrollableContent(double width, double height, List<Map<String, dynamic>> courses, double progressPercentage) {
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProgressCard(width, height, progressPercentage),
+              SizedBox(height: height * 0.02),
+              _buildCourseGrid(width, height, courses),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildProgressCard(double width, double height, double progressPercentage) {
+    return Card(
+      elevation: 20,
+      color: appStyles.yellowColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(35),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(left: width * 0.07, top: height * 0.03, bottom: height * 0.02),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: 100,
+                  width: 100,
+                  child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      Text(
-                        "Streak",
-                        style: appStyles.titleWhite,
+                      CircularProgressIndicator(
+                        value: 1.0,
+                        strokeWidth: 12,
+                        valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
                       ),
-                      Row(
-                        children: [
-                          Text(
-                            '4',
-                            style: appStyles.headlineWhite,
-                          ),
-                          SizedBox(width: 4),
-                          Icon(
-                            Icons.whatshot,
+                      CircularProgressIndicator(
+                        strokeCap: StrokeCap.round,
+                        value: progressPercentage / 100,
+                        strokeWidth: 20,
+                        valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
+                        backgroundColor: appStyles.blackColor,
+                      ),
+                      Center(
+                        child: Text(
+                          '${progressPercentage.toInt()}',
+                          style: TextStyle(
+                            fontFamily: 'IBM Plex Sans',
+                            fontSize: 38,
+                            fontWeight: FontWeight.w700,
                             color: appStyles.whiteColor,
-                            size: 35,
+                            letterSpacing: -2,
                           ),
-                        ],
+                        ),
                       ),
                     ],
                   ),
                 ),
-              ),
+                Container(
+                  height: height * 0.05,
+                  width: width * 0.25,
+                  decoration: BoxDecoration(
+                    color: appStyles.indigoColor,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(35),
+                      bottomLeft: Radius.circular(35),
+                    ),
+                  ),
+                  child: Center(
+                    child: Text("Continue", style: appStyles.smallTitleWhite),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: height * 0.01),
-            // Scrollable content
-            Expanded(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: width * 0.03),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Progress Card
-                      Card(
-                        elevation: 20,
-                        color: appStyles.yellowColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(35),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                            left: width * 0.07,
-                            top: height * 0.03,
-                            bottom: height * 0.02,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    height: 100,
-                                    width: 100,
-                                    child: Stack(
-                                      fit: StackFit.expand,
-                                      children: [
-                                        CircularProgressIndicator(
-                                          value: 1.0,
-                                          strokeWidth: 12,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  appStyles.whiteColor),
-                                        ),
-                                        CircularProgressIndicator(
-                                          strokeCap: StrokeCap.round,
-                                          value: progressPercentage / 100,
-                                          strokeWidth: 20,
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  appStyles.whiteColor),
-                                          backgroundColor: appStyles.blackColor,
-                                        ),
-                                        Center(
-                                          child: Text(
-                                            '${progressPercentage.toInt()}',
-                                            style: TextStyle(
-                                              fontFamily: 'IBM Plex Sans',
-                                              fontSize: 38,
-                                              fontWeight: FontWeight.w700,
-                                              color: appStyles.whiteColor,
-                                              letterSpacing: -2,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    height: height * 0.05,
-                                    width: width * 0.25,
-                                    decoration: BoxDecoration(
-                                      color: appStyles.indigoColor,
-                                      borderRadius: BorderRadius.only(
-                                          topLeft: Radius.circular(35),
-                                          bottomLeft: Radius.circular(35)),
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "Continue",
-                                        style: appStyles.smallTitleWhite,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(height: height * 0.04),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Dart',
-                                          style: appStyles.titleBlackBold),
-                                      Text('Master Class',
-                                          style: appStyles.smallTitleBlack),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: height * 0.1,
-                                    width: width * 0.5,
-                                    child: Image.asset(appStyles.dart),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: height * 0.02),
-                      // GridView
-                      GridView.builder(
-                        shrinkWrap: true, // Ensures it takes minimal space
-                        physics:
-                            NeverScrollableScrollPhysics(), // Disables inner scrolling
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12.0,
-                          mainAxisSpacing: 12.0,
-                          childAspectRatio: 0.85,
-                        ),
-                        itemCount: courses.length + 1,
-                        itemBuilder: (context, index) {
-                          if (index == courses.length) {
-                            return addCard(height, width);
-                          }
-                          final course = courses[index];
-                          return courseCard(
-                            height,
-                            width,
-                            course['title'],
-                            course['subtitle'],
-                            course['image'],
-                            course['progress'],
-                            course['color'],
-                          );
-                        },
-                      ),
-                    ],
-                  ),
+            SizedBox(height: height * 0.04),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Dart', style: appStyles.titleBlackBold),
+                    Text('Master Class', style: appStyles.smallTitleBlack),
+                  ],
                 ),
-              ),
+                SizedBox(
+                  height: height * 0.1,
+                  width: width * 0.5,
+                  child: Image.asset(appStyles.dart),
+                ),
+              ],
             ),
           ],
         ),
@@ -275,8 +233,39 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget courseCard(double height, double width, String title, String subtitle,
-      String image, int progressPercentage, Color color) {
+  Widget _buildCourseGrid(double width, double height, List<Map<String, dynamic>> courses) {
+    return Padding(
+      padding: EdgeInsets.only(bottom: height * .06),
+      child: GridView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12.0,
+          mainAxisSpacing: 12.0,
+          childAspectRatio: 0.85,
+        ),
+        itemCount: courses.length + 1,
+        itemBuilder: (context, index) {
+          if (index == courses.length) {
+            return _addCard(height, width);
+          }
+          final course = courses[index];
+          return _courseCard(
+            height,
+            width,
+            course['title'],
+            course['subtitle'],
+            course['image'],
+            course['progress'],
+            course['color'],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _courseCard(double height, double width, String title, String subtitle, String image, int progressPercentage, Color color) {
     return Card(
       elevation: 10,
       color: color,
@@ -293,7 +282,6 @@ class Homescreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Circular Progress Indicator
             SizedBox(
               height: 50,
               width: 50,
@@ -303,8 +291,7 @@ class Homescreen extends StatelessWidget {
                   CircularProgressIndicator(
                     value: 1.0,
                     strokeWidth: 10,
-                    valueColor:
-                        AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
+                    valueColor: AlwaysStoppedAnimation<Color>(appStyles.whiteColor),
                   ),
                   CircularProgressIndicator(
                     strokeCap: StrokeCap.round,
@@ -328,21 +315,14 @@ class Homescreen extends StatelessWidget {
                 ],
               ),
             ),
-            // Bottom Row: Title and Subtitle
-            Row(
+ Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: appStyles.subTitleWhite,
-                    ),
-                    Text(
-                      subtitle,
-                      style: appStyles.smallTitleWhite,
-                    ),
+                    Text(title, style: appStyles.subTitleWhite),
+                    Text(subtitle, style: appStyles.smallTitleWhite),
                   ],
                 ),
                 Spacer(),
@@ -351,9 +331,7 @@ class Homescreen extends StatelessWidget {
                   child: SizedBox(
                     height: height * 0.09,
                     width: width * 0.09,
-                    child: Image.asset(
-                      image,
-                    ),
+                    child: Image.asset(image),
                   ),
                 ),
               ],
@@ -364,10 +342,7 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget addCard(
-    double height,
-    double width,
-  ) {
+  Widget _addCard(double height, double width) {
     return Card(
       elevation: 10,
       color: appStyles.grayColor,
@@ -378,15 +353,8 @@ class Homescreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.add,
-              size: 40,
-              color: appStyles.whiteColor,
-            ),
-            Text(
-              'Add Course',
-              style: appStyles.subTitleWhite,
-            ),
+            Icon(Icons.add, size: 40, color: appStyles.whiteColor),
+            Text('Add Course', style: appStyles.subTitleWhite),
           ],
         ),
       ),

@@ -13,6 +13,8 @@ class appStyles {
   static const Color blackColor = Color(0xff050505);
   static const Color grayColor = Color(0xffE8E7EF);
 
+// E7E8E8
+
   //Text Style
   static const TextStyle headlineBlack = TextStyle(
     fontFamily: 'IBM Plex Sans',
@@ -131,5 +133,5 @@ class appStyles {
   static const IconData edit = Icons.edit_rounded;
   static const IconData delete = Icons.delete_rounded;
   static const IconData save = Icons.save_rounded;
-  static const IconData back = Icons.arrow_back_rounded;
+  static const IconData back = Icons.arrow_back_ios_rounded;
 }

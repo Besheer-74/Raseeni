@@ -19,8 +19,12 @@ class BottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+
     final _bottomNavBarController =
-        Provider.of<Bottomnavbarcontroller>(context);
+        Provider.of<BottomNavBarController>(context);
 
     return Scaffold(
       body: Stack(
@@ -32,7 +36,7 @@ class BottomNavBar extends StatelessWidget {
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
                 child: Container(
-                  height: 60,
+                  height: height * 0.06,
                   decoration: BoxDecoration(
                     color: appStyles.whiteColor.withOpacity(0.5),
                     borderRadius: BorderRadius.only(
@@ -59,7 +63,7 @@ class BottomNavBar extends StatelessWidget {
   }
 
   Widget _buildIcon(
-      IconData icon, int index, Bottomnavbarcontroller controller) {
+      IconData icon, int index, BottomNavBarController controller) {
     return GestureDetector(
       onTap: () => controller.selectedScreen(index),
       child: Icon(

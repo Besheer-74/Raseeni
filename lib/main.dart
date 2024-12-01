@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'controller/chat_controller.dart';
 import 'firebase_options.dart';
 
 import 'view/bottomNavBar.dart';
 import 'model/appStyle.dart';
 import 'controller/bottomNavBarController.dart';
+import 'view/view_chat_screen.dart';
+import 'view/view_dashboard_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +19,8 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Bottomnavbarcontroller()),
+        ChangeNotifierProvider(create: (_) => BottomNavBarController()),
+        ChangeNotifierProvider(create: (_) => ChatController()),
       ],
       child: MyApp(),
     ),
