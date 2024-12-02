@@ -17,14 +17,14 @@ class Profilescreen extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            height: height * .09,
+            height: height * .11,
             decoration: BoxDecoration(
               color: AppStyles.blueColor,
             ),
             child: Stack(
               children: [
                 Align(
-                  alignment: Alignment.center,
+                  alignment: Alignment.topCenter,
                   child: Image.asset(AppStyles.logoWithoutBackground),
                 ),
                 Positioned(
@@ -59,12 +59,12 @@ class Profilescreen extends StatelessWidget {
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
                         CircleAvatar(
-                          radius: 70,
+                          radius: 50,
                           backgroundColor: AppStyles.grayColor,
                           child: Icon(
                             Icons.person,
                             color: AppStyles.blackColor,
-                            size: 70,
+                            size: 50,
                           ),
                         ),
                         GestureDetector(
@@ -112,10 +112,15 @@ class Profilescreen extends StatelessWidget {
                                   'Ahlan,',
                                   style: AppStyles.bold20(AppStyles.blackColor),
                                 ),
-                                Text(
-                                  'Abdelarahman Abdelrahman',
-                                  style:
-                                      AppStyles.regular20(AppStyles.blackColor),
+                                SizedBox(
+                                  width: width * 0.6,
+                                  child: Text(
+                                    'Abdelarahman Abdelarahman',
+                                    style: AppStyles.regular20(
+                                        AppStyles.blackColor),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
                                 ),
                               ],
                             ),
@@ -134,10 +139,10 @@ class Profilescreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(height: height * 0.01),
+                    SizedBox(height: height * 0.03),
                     Container(
-                      height: height * 0.23,
                       width: width * 0.9,
+                      // height: height * 0.25,
                       decoration: BoxDecoration(
                         color: AppStyles.blueColor,
                         borderRadius: BorderRadius.circular(35),
@@ -150,41 +155,37 @@ class Profilescreen extends StatelessWidget {
                           right: width * 0.05,
                         ),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
                                 '‘‘',
-                                style: AppStyles.bold96(AppStyles.whiteColor),
+                                style: AppStyles.bold48(AppStyles.whiteColor),
                               ),
                             ),
-                            Row(
-                              children: [
-                                SizedBox(
-                                  width: width * 0.8,
-                                  child: Text(
-                                    'It takes courage to grow up and become who you really are.',
-                                    maxLines: 3,
-                                    textAlign: TextAlign.center,
-                                    style: AppStyles.medium20(
-                                        AppStyles.whiteColor),
-                                  ),
-                                )
-                              ],
+                            SizedBox(
+                              width: width * 0.8,
+                              child: Text(
+                                'It takes courage to grow up and become who you really are.',
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.center,
+                                style: AppStyles.medium20(AppStyles.whiteColor),
+                              ),
                             ),
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
                                 ',,',
-                                style: AppStyles.bold96(AppStyles.whiteColor),
+                                style: AppStyles.bold48(AppStyles.whiteColor),
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    SizedBox(height: height * 0.02),
+                    SizedBox(height: height * 0.03),
                     Padding(
                       padding: EdgeInsets.only(
                           right: width * 0.03, left: width * 0.03),
@@ -206,14 +207,14 @@ class Profilescreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Streak',
-                                    style: AppStyles.regular24(
+                                    style: AppStyles.regular20(
                                         AppStyles.whiteColor),
                                   ),
                                   Row(
                                     children: [
                                       Text(
                                         '4',
-                                        style: AppStyles.bold32(
+                                        style: AppStyles.bold20(
                                             AppStyles.whiteColor),
                                       ),
                                       Icon(
@@ -249,14 +250,14 @@ class Profilescreen extends StatelessWidget {
                                 children: [
                                   Text(
                                     'Done\nCourses',
-                                    style: AppStyles.regular24(
+                                    style: AppStyles.regular20(
                                         AppStyles.whiteColor),
                                   ),
                                   Row(
                                     children: [
                                       Text(
                                         '1',
-                                        style: AppStyles.bold32(
+                                        style: AppStyles.bold20(
                                             AppStyles.whiteColor),
                                       ),
                                       Icon(
@@ -273,7 +274,7 @@ class Profilescreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.02,
+                      height: height * 0.03,
                     ),
                     Center(
                       child: Text(

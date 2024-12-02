@@ -15,6 +15,7 @@ class AppStyles {
   static const Color grayColor = Color(0xffBDBEBE);
   static const Color maybeGray = Color(0xffA6A9CB);
   static const Color redColor = Color(0xffC73E1C);
+  static const Color darkOrangeColor = Color(0xffFF5B00);
 
   //Text Style
   static TextStyle bold96(Color c) => TextStyle(
@@ -218,4 +219,6 @@ class AppStyles {
   static const IconData back = Icons.arrow_back_ios_rounded;
   static const IconData done = Icons.done_rounded;
   static const IconData badge = Icons.badge_rounded;
+  static const IconData streak = Icons.local_fire_department;
+  static const IconData person = Icons.person;
 }

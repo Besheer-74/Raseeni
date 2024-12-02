@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../model/appStyle.dart';
+import '../../model/appStyle.dart';
 
 class ViewDashboardScreen extends StatelessWidget {
   const ViewDashboardScreen({super.key});

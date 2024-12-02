@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import '../model/appStyle.dart';
+import '../../model/appStyle.dart';
 
 class Dashboardscreen extends StatelessWidget {
   final List<Map<String, dynamic>> explore = [

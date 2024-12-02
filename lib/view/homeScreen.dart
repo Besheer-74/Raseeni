@@ -2,6 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:raseeni/model/appStyle.dart';
 
+import 'streakScreen.dart';
+
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
 
@@ -55,7 +57,7 @@ class Homescreen extends StatelessWidget {
         child: Column(
           children: [
             _buildAppBar(height),
-            _buildStreakCard(width, height),
+            _buildStreakCard(width, height, context),
             SizedBox(height: height * 0.01),
             _buildScrollableContent(width, height, courses, progressPercentage),
           ],
@@ -99,31 +101,43 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStreakCard(double width, double height) {
+  Widget _buildStreakCard(double width, double height, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
           horizontal: width * 0.03, vertical: height * 0.01),
-      child: Container(
-        width: double.infinity,
-        height: height * .09,
-        decoration: BoxDecoration(
-          color: AppStyles.orangeColor,
-          borderRadius: BorderRadius.circular(35),
-        ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: width * .07),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Streak", style: AppStyles.regular24(AppStyles.whiteColor)),
-              Row(
-                children: [
-                  Text('4', style: AppStyles.bold32(AppStyles.whiteColor)),
-                  SizedBox(width: 4),
-                  Icon(Icons.whatshot, color: AppStyles.whiteColor, size: 35),
-                ],
-              ),
-            ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute<void>(
+              builder: (BuildContext context) => Streakscreen(),
+            ),
+          );
+        },
+        child: Container(
+          width: double.infinity,
+          height: height * .09,
+          decoration: BoxDecoration(
+            color: AppStyles.orangeColor,
+            borderRadius: BorderRadius.circular(35),
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: width * .07),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Streak",
+                    style: AppStyles.regular24(AppStyles.whiteColor)),
+                Row(
+                  children: [
+                    Text('4', style: AppStyles.bold32(AppStyles.whiteColor)),
+                    SizedBox(width: 4),
+                    Icon(AppStyles.streak,
+                        color: AppStyles.whiteColor, size: 35),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -338,7 +352,7 @@ class Homescreen extends StatelessWidget {
   Widget _addCard(double height, double width) {
     return Card(
       elevation: 10,
-      color: AppStyles.grayColor,
+      color: AppStyles.whiteColor,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(35),
       ),
@@ -349,8 +363,16 @@ class Homescreen extends StatelessWidget {
             Container(
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
+                  color: AppStyles.grayColor,
                 ),
-                child: Icon(Icons.add, size: 40, color: AppStyles.whiteColor)),
+                child: Icon(
+                  Icons.add,
+                  size: 40,
+                  color: AppStyles.whiteColor,
+                )),
+            SizedBox(
+              height: height * 0.01,
+            ),
             Text('Add Course', style: AppStyles.bold15(AppStyles.grayColor)),
           ],
         ),
