@@ -1,14 +1,16 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:raseeni/controller/auth_controller.dart';
-import 'package:raseeni/controller/streak_controller.dart';
-import 'package:raseeni/view/auth/auth_email.dart';
-import 'controller/chat_controller.dart';
-import 'controller/image_pick_contoller.dart';
 import 'firebase_options.dart';
 
+import 'controller/auth_controller.dart';
+import 'controller/streak_controller.dart';
+import 'view/authentication/login_screen.dart';
+import 'view/authentication/signup_proccess/auth_email.dart';
+import 'controller/chat_controller.dart';
+import 'controller/image_pick_contoller.dart';
 import 'view/bottomNavBar.dart';
 import 'model/appStyle.dart';
 import 'controller/bottomNavBarController.dart';
@@ -21,11 +23,11 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => BottomNavBarController()),
-        ChangeNotifierProvider(create: (_) => ChatController()),
         ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => ProfileImageController()),
+        ChangeNotifierProvider(create: (_) => BottomNavBarController()),
         ChangeNotifierProvider(create: (_) => StreakContoller()),
-        ChangeNotifierProvider(create: (_) => Imagecontroller()),
+        ChangeNotifierProvider(create: (_) => ChatController()),
       ],
       child: MyApp(),
     ),
@@ -33,7 +35,15 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  void initState() {
+    FirebaseAuth.instance.authStateChanges().listen((User? user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +61,9 @@ class MyApp extends StatelessWidget {
         fontFamily: 'IBM Plex Sans',
         useMaterial3: true,
       ),
-      home: AuthEmail(),
+      home: FirebaseAuth.instance.currentUser == null
+          ? LoginScreen()
+          : BottomNavBar(),
     );
   }
 }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raseeni/controller/chat_controller.dart';
 
-import '../model/appStyle.dart';
+import '../../model/appStyle.dart';
 
 class ViewChatScreen extends StatefulWidget {
   const ViewChatScreen({super.key});

@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:raseeni/model/appStyle.dart';
 
+import '../controller/auth_controller.dart';
+import '../controller/image_pick_contoller.dart';
 import 'doneCourses.dart';
 
-class Profilescreen extends StatelessWidget {
-  Profilescreen({super.key});
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double width = size.width;
     final double height = size.height;
+    final _getData = Provider.of<AuthController>(context);
+    final _imageController = Provider.of<ProfileImageController>(context);
+
     return Scaffold(
       body: SafeArea(
           child: Stack(
@@ -55,39 +61,11 @@ class Profilescreen extends StatelessWidget {
                 child: Column(
                   children: [
                     SizedBox(height: height * 0.02),
-                    Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: [
-                        CircleAvatar(
-                          radius: 50,
-                          backgroundColor: AppStyles.grayColor,
-                          child: Icon(
-                            Icons.person,
-                            color: AppStyles.blackColor,
-                            size: 50,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {},
-                          child: Container(
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              color: AppStyles.blueColor,
-                              borderRadius: BorderRadius.circular(360),
-                            ),
-                            child: Icon(
-                              Icons.edit,
-                              color: AppStyles.whiteColor,
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      '@abdo_1284',
-                      style: AppStyles.regular16(AppStyles.blackColor),
-                    ),
+                    _buildProfilePicture(_imageController, width, _getData),
+                    // Text(
+                    //   '@abdo_1284',
+                    //   style: AppStyles.regular16(AppStyles.blackColor),
+                    // ),
                     Padding(
                       padding: EdgeInsets.only(
                         left: 25,
@@ -115,7 +93,7 @@ class Profilescreen extends StatelessWidget {
                                 SizedBox(
                                   width: width * 0.6,
                                   child: Text(
-                                    'Abdelarahman Abdelarahman',
+                                    _getData.firstName ?? "",
                                     style: AppStyles.regular20(
                                         AppStyles.blackColor),
                                     maxLines: 1,
@@ -274,7 +252,7 @@ class Profilescreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.03,
+                      height: height * 0.01,
                     ),
                     Center(
                       child: Text(
@@ -283,7 +261,7 @@ class Profilescreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.03,
+                      height: height * 0.01,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -316,7 +294,9 @@ class Profilescreen extends StatelessWidget {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            _getData.logoutUser();
+                          },
                           child: Container(
                             width: 40,
                             height: 40,
@@ -333,6 +313,61 @@ class Profilescreen extends StatelessWidget {
           )
         ],
       )),
+    );
+  }
+
+  Widget _buildProfilePicture(ProfileImageController _imageProvider,
+      double width, AuthController _authController) {
+    return Center(
+      child: CircleAvatar(
+        radius: width * 0.16,
+        backgroundColor: AppStyles.indigoColor,
+        child: CircleAvatar(
+          radius: width * 0.15,
+          backgroundColor: AppStyles.whiteColor,
+          child: Stack(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: FileImage(_imageProvider.profileImage!),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: _buildEditIcon(_imageProvider, _authController),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildEditIcon(
+      ProfileImageController _imageProvider, AuthController _authController) {
+    return Container(
+      height: 40,
+      width: 40,
+      decoration: BoxDecoration(
+        color: const Color(0xff5063BF),
+        borderRadius: BorderRadius.circular(100),
+      ),
+      child: IconButton(
+        onPressed: () async {
+          await _imageProvider
+              .pickImage(_authController); // Pass authController to pickImage
+        },
+        icon: Icon(
+          AppStyles.edit,
+          color: AppStyles.whiteColor,
+          size: 25,
+        ),
+      ),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:raseeni/model/appStyle.dart';
 
 import '../controller/bottomNavBarController.dart';
 import 'profileScreen.dart';
-import 'chatScreen.dart';
+import 'chat/chatScreen.dart';
 import 'dashboard/dashboardScreen.dart';
 import 'homeScreen.dart';
 
@@ -14,7 +14,7 @@ class BottomNavBar extends StatelessWidget {
     Homescreen(),
     Chatscreen(),
     Dashboardscreen(),
-    Profilescreen(),
+    ProfileScreen(),
   ];
 
   @override

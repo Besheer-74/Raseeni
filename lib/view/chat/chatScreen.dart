@@ -30,32 +30,81 @@ class Chatscreen extends StatelessWidget {
         'notification_count': null,
       },
     ];
+
+    final Size size = MediaQuery.of(context).size;
+    final double width = size.width;
+    final double height = size.height;
+
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
-        child: GridView.builder(
-            itemCount: theData.length,
-            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                crossAxisSpacing: 16.0,
-                mainAxisSpacing: 16.0),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => ViewChatScreen(
-                            // title: theData[index]['title'],
-                            // theColor: theData[index]['the_color'],
-                            ))),
-                child: TheChatItem(
-                    theItemColor: theData[index]['the_color'],
-                    theTextColor: theData[index]['title_color'],
-                    theTitle: theData[index]['title'],
-                    theImage: theData[index]['the_image'],
-                    notificationCount: theData[index]['notification_count']),
-              );
-            }),
+      body: Column(
+        children: [
+          _buildAppBar(height),
+          Expanded(
+            child: Padding(
+              padding:
+                  const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
+              child: GridView.builder(
+                  itemCount: theData.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      crossAxisSpacing: 16.0,
+                      mainAxisSpacing: 16.0),
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ViewChatScreen(
+                                  // title: theData[index]['title'],
+                                  // theColor: theData[index]['the_color'],
+                                  ))),
+                      child: TheChatItem(
+                          theItemColor: theData[index]['the_color'],
+                          theTextColor: theData[index]['title_color'],
+                          theTitle: theData[index]['title'],
+                          theImage: theData[index]['the_image'],
+                          notificationCount: theData[index]
+                              ['notification_count']),
+                    );
+                  }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBar(double height) {
+    return Container(
+      width: double.infinity,
+      height: height * .12,
+      decoration: BoxDecoration(
+        color: AppStyles.blueColor,
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(35),
+          bottomLeft: Radius.circular(35),
+        ),
+      ),
+      child: Stack(
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Image.asset(
+              AppStyles.logoWithoutBackground,
+            ),
+          ),
+          Positioned(
+            right: 16,
+            top: 16,
+            child: IconButton(
+              onPressed: () {},
+              icon: Icon(
+                AppStyles.notificationNone,
+                color: AppStyles.whiteColor,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

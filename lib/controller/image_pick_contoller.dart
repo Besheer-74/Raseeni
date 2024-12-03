@@ -3,24 +3,27 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-class Imagecontroller extends ChangeNotifier {
-  File? image;
+import 'auth_controller.dart';
 
-  File? get imagePiced => image;
+class ProfileImageController extends ChangeNotifier {
+  File? profileImage;
+
+  File? get imagePiced => profileImage;
 
   final ImagePicker _picker = ImagePicker();
 
-  Future<void> pickImage() async {
+  Future<void> pickImage(AuthController authController) async {
     final XFile? pickedFile =
         await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      image = File(pickedFile.path);
+      profileImage = File(pickedFile.path);
+      authController.setProfileImage(profileImage!);
       notifyListeners();
     }
   }
 
   void clearImage() {
-    image = null;
+    profileImage = null;
     notifyListeners();
   }
 }
