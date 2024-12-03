@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'controller/profile_controller.dart';
 import 'firebase_options.dart';
 
 import 'controller/auth_controller.dart';
 import 'controller/streak_controller.dart';
 import 'view/authentication/login_screen.dart';
-import 'view/authentication/signup_proccess/auth_email.dart';
 import 'controller/chat_controller.dart';
 import 'controller/image_pick_contoller.dart';
 import 'view/bottomNavBar.dart';
@@ -20,10 +20,19 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  final profileController = ProfileController();
+  final authController = AuthController();
+
+  await profileController.initialize();
+
+  // Make sure the initialize method is called after profileController is created
+  await profileController
+      .initialize(); // This should load the data from SharedPreferences
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthController()),
+        ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => ProfileImageController()),
         ChangeNotifierProvider(create: (_) => BottomNavBarController()),
         ChangeNotifierProvider(create: (_) => StreakContoller()),

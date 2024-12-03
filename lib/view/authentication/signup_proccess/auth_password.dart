@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../controller/auth_controller.dart';
+import '../../../controller/profile_controller.dart';
 import '../../../model/appStyle.dart';
 import 'auth_profile.dart';
 
@@ -15,24 +17,27 @@ class AuthPassword extends StatelessWidget {
     final double width = size.width;
     final double height = size.height;
     final _authController = Provider.of<AuthController>(context);
+    final _profileController = Provider.of<ProfileController>(context);
 
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.05, vertical: height * 0.08),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildHeader(),
-              SizedBox(height: height * 0.07),
-              _buildPasswordField(_authController),
-              SizedBox(height: height * 0.02),
-              _buildConfirmPasswordField(_authController),
-              SizedBox(height: height * 0.07),
-              _buildNextButton(context, width, height, _passwordController.text,
-                  _authController),
-            ],
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.05, vertical: height * 0.08),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildHeader(),
+                SizedBox(height: height * 0.07),
+                _buildPasswordField(_authController),
+                SizedBox(height: height * 0.02),
+                _buildConfirmPasswordField(_authController),
+                SizedBox(height: height * 0.07),
+                _buildNextButton(context, width, height,
+                    _passwordController.text, _authController),
+              ],
+            ),
           ),
         ),
       ),
@@ -60,8 +65,6 @@ class AuthPassword extends StatelessWidget {
       label: "Password",
       controller: _passwordController,
       obscureText: _authController.isPasswordHidden,
-      isValid: _authController.isPasswordValid,
-      onChanged: _authController.validatePassword,
       toggleVisibility: _authController.togglePasswordVisibility,
     );
   }
@@ -71,8 +74,6 @@ class AuthPassword extends StatelessWidget {
       label: "Confirm Password",
       controller: _confirmPasswordController,
       obscureText: _authController.isPasswordHidden,
-      isValid: _authController.isPasswordValid,
-      onChanged: _authController.validatePassword,
       toggleVisibility: _authController.togglePasswordVisibility,
     );
   }
@@ -81,8 +82,6 @@ class AuthPassword extends StatelessWidget {
     required String label,
     required TextEditingController controller,
     required bool obscureText,
-    required bool isValid,
-    required Function(String) onChanged,
     required VoidCallback toggleVisibility,
   }) {
     return Column(
@@ -90,14 +89,12 @@ class AuthPassword extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppStyles.regular16(
-              isValid ? AppStyles.greenColor : AppStyles.maybeGray),
+          style: AppStyles.regular16(AppStyles.greenColor),
         ),
         SizedBox(height: 8.0),
         TextFormField(
           controller: controller,
           obscureText: obscureText,
-          onChanged: onChanged,
           decoration: InputDecoration(
             suffixIcon: IconButton(
               icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
@@ -105,12 +102,12 @@ class AuthPassword extends StatelessWidget {
             ),
             border: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: isValid ? AppStyles.greenColor : AppStyles.maybeGray,
+                color: AppStyles.greenColor,
               ),
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: isValid ? AppStyles.greenColor : AppStyles.maybeGray,
+                color: AppStyles.greenColor,
                 width: 1.5,
               ),
             ),
@@ -125,26 +122,9 @@ class AuthPassword extends StatelessWidget {
       String password, AuthController _authController) {
     return Center(
       child: GestureDetector(
-        onTap: () async {
-          if (_authController.isPasswordValid) {
-            _authController.setPassword(password);
-            try {
-              final user = await _authController
-                  .registerUserWithEmailAndPassword(context);
-              if (user != null) {
-                _authController.setUserId(user.uid); // Store userId in provider
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AuthProfile(),
-                  ),
-                );
-              }
-            } catch (e) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text('Registration failed')));
-            }
-          }
+        onTap: () {
+          _authController.setPassword(password);
+          _authController.registerUser(context);
         },
         child: Container(
           width: width * 0.5,

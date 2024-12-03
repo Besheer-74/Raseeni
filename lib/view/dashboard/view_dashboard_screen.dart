@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../model/appStyle.dart';
 
 class ViewDashboardScreen extends StatelessWidget {
@@ -13,7 +12,7 @@ class ViewDashboardScreen extends StatelessWidget {
 
     List<Map<String, dynamic>> softSkills = [
       {
-        "title": "Presentation skils",
+        "title": "Presentation skills",
         "image": "",
       },
       {
@@ -21,77 +20,88 @@ class ViewDashboardScreen extends StatelessWidget {
         "image": "",
       },
     ];
+
     return Scaffold(
       body: SafeArea(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            // App Bar
-            Container(
-              width: double.infinity,
-              height: height * .09,
-              decoration: BoxDecoration(
-                color: AppStyles.blueColor,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(35),
-                  bottomLeft: Radius.circular(35),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      children: [
-                        IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              AppStyles.back,
-                              color: AppStyles.whiteColor,
-                            )),
-                        Text("Soft Skills",
-                            style: AppStyles.regular32(AppStyles.blackColor)),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(right: width * 0.05),
-                    child: Image.asset(
-                      AppStyles.skills,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            _buildAppBar(width, height, context),
             SizedBox(height: height * 0.02),
-            Expanded(
-              child: Padding(
-                padding:
-                    EdgeInsets.only(left: width * 0.03, right: width * 0.03),
-                child: ListView.builder(
-                  itemCount: softSkills.length,
-                  itemBuilder: (context, index) {
-                    final _softSkill = softSkills[index];
-                    return Padding(
-                      padding: EdgeInsets.only(bottom: height * 0.02),
-                      child: coursesCard(
-                        height,
-                        width,
-                        _softSkill['title'],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ),
+            _buildSoftSkillsList(softSkills, width, height),
           ],
         ),
       ),
     );
   }
 
-  Widget coursesCard(double height, double width, String title) {
+  Widget _buildAppBar(double width, double height, BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: height * 0.09,
+      decoration: BoxDecoration(
+        color: AppStyles.blueColor,
+        borderRadius: BorderRadius.only(
+          bottomRight: Radius.circular(35),
+          bottomLeft: Radius.circular(35),
+        ),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          _buildAppBarLeft(width, context),
+          _buildAppBarRight(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBarLeft(double width, BuildContext context) {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Row(
+        children: [
+          IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(AppStyles.back, color: AppStyles.whiteColor),
+          ),
+          Text(
+            "Soft Skills",
+            style: AppStyles.regular32(AppStyles.blackColor),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAppBarRight() {
+    return Padding(
+      padding: EdgeInsets.only(right: 20), // Adjusted padding for simplicity
+      child: Image.asset(AppStyles.skills),
+    );
+  }
+
+  Widget _buildSoftSkillsList(
+      List<Map<String, dynamic>> softSkills, double width, double height) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: width * 0.03),
+        child: ListView.builder(
+          itemCount: softSkills.length,
+          itemBuilder: (context, index) {
+            final _softSkill = softSkills[index];
+            return Padding(
+              padding: EdgeInsets.only(bottom: height * 0.02),
+              child: _buildCoursesCard(height, width, _softSkill['title']),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCoursesCard(double height, double width, String title) {
     return Container(
       width: double.infinity,
       height: height * 0.25,
@@ -102,28 +112,32 @@ class ViewDashboardScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          Container(
-            width: double.infinity,
-            height: height * 0.06,
-            decoration: const BoxDecoration(
-              color: AppStyles.indigoColor,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(35),
-                bottomRight: Radius.circular(35),
-              ),
-            ),
-            child: Padding(
-              padding: EdgeInsets.only(left: width * 0.04),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  title,
-                  style: AppStyles.medium16(AppStyles.indigoColor),
-                ),
-              ),
-            ),
-          ),
+          _buildCourseCardFooter(height, width, title),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCourseCardFooter(double height, double width, String title) {
+    return Container(
+      width: double.infinity,
+      height: height * 0.06,
+      decoration: const BoxDecoration(
+        color: AppStyles.indigoColor,
+        borderRadius: BorderRadius.only(
+          bottomLeft: Radius.circular(35),
+          bottomRight: Radius.circular(35),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.only(left: width * 0.04),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Text(
+            title,
+            style: AppStyles.medium16(AppStyles.indigoColor),
+          ),
+        ),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:raseeni/controller/auth_controller.dart';
 
 import '../../../controller/image_pick_contoller.dart';
+import '../../../controller/profile_controller.dart';
 import '../../../model/appStyle.dart';
 import '../../bottomNavBar.dart';
 
@@ -18,6 +19,7 @@ class AuthProfile extends StatelessWidget {
 
     final _authController = Provider.of<AuthController>(context);
     final _imageController = Provider.of<ProfileImageController>(context);
+    final _profileController = Provider.of<ProfileController>(context);
     final _userId = _authController.userId; // Access userId from provider
 
     return Scaffold(
@@ -32,14 +34,12 @@ class AuthProfile extends StatelessWidget {
             children: [
               _buildHeaderText(),
               SizedBox(height: height * 0.03),
-              _buildProfilePicture(_imageController, width, _authController),
+              _buildProfilePicture(_imageController, width, _profileController),
               SizedBox(height: height * 0.04),
               _buildTextField(
                 "First Name",
                 "Walid",
                 _firstName,
-                _authController.isFirstNameValid,
-                _authController.validateFirstName,
                 height,
               ),
               SizedBox(height: height * 0.04),
@@ -47,13 +47,11 @@ class AuthProfile extends StatelessWidget {
                 "Last Name",
                 "Besheer",
                 _lastName,
-                _authController.isLastNameValid,
-                _authController.validateLastName,
                 height,
               ),
               SizedBox(height: height * 0.04),
               _buildNextButton(width, height, _firstName.text, _lastName.text,
-                  _userId!, _authController, _imageController, context),
+                  _userId!, _profileController, context),
             ],
           ),
         ),
@@ -81,7 +79,7 @@ class AuthProfile extends StatelessWidget {
   }
 
   Widget _buildProfilePicture(ProfileImageController _imageProvider,
-      double width, AuthController _authController) {
+      double width, ProfileController _profileController) {
     return Center(
       child: CircleAvatar(
         radius: width * 0.22,
@@ -92,7 +90,7 @@ class AuthProfile extends StatelessWidget {
           child: _imageProvider.profileImage == null
               ? IconButton(
                   onPressed: () async {
-                    await _imageProvider.pickImage(_authController);
+                    await _imageProvider.pickImage(_profileController);
                   },
                   icon: Icon(
                     AppStyles.person,
@@ -114,7 +112,7 @@ class AuthProfile extends StatelessWidget {
                     Positioned(
                       bottom: 0,
                       right: 0,
-                      child: _buildEditIcon(_imageProvider, _authController),
+                      child: _buildEditIcon(_imageProvider, _profileController),
                     ),
                   ],
                 ),
@@ -123,8 +121,8 @@ class AuthProfile extends StatelessWidget {
     );
   }
 
-  Widget _buildEditIcon(
-      ProfileImageController _imageProvider, AuthController _authController) {
+  Widget _buildEditIcon(ProfileImageController _imageProvider,
+      ProfileController _profileController) {
     return Container(
       height: 45,
       width: 45,
@@ -134,8 +132,8 @@ class AuthProfile extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: () async {
-          await _imageProvider
-              .pickImage(_authController); // Pass authController to pickImage
+          await _imageProvider.pickImage(
+              _profileController); // Pass authController to pickImage
         },
         icon: Icon(AppStyles.edit, color: Colors.white),
       ),
@@ -146,8 +144,6 @@ class AuthProfile extends StatelessWidget {
     String label,
     String hint,
     TextEditingController controller,
-    bool isValid,
-    Function(String) onChanged,
     double height,
   ) {
     return Column(
@@ -155,28 +151,20 @@ class AuthProfile extends StatelessWidget {
       children: [
         Text(
           label,
-          style: AppStyles.medium16(
-            isValid ? AppStyles.greenColor : AppStyles.maybeGray,
-          ),
+          style: AppStyles.medium16(AppStyles.greenColor),
         ),
         SizedBox(height: height * 0.007),
         TextFormField(
           controller: controller,
-          onChanged: onChanged,
           decoration: InputDecoration(
             hintText: hint,
             hintStyle: AppStyles.regular16(AppStyles.grayColor),
-            suffixIcon: isValid
-                ? Icon(Icons.check_circle, color: AppStyles.greenColor)
-                : null,
             border: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: isValid ? AppStyles.greenColor : AppStyles.grayColor,
-              ),
+              borderSide: BorderSide(color: AppStyles.greenColor),
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
-                color: isValid ? AppStyles.greenColor : AppStyles.grayColor,
+                color: AppStyles.greenColor,
                 width: 1.5,
               ),
             ),
@@ -194,23 +182,18 @@ class AuthProfile extends StatelessWidget {
       String firstName,
       String lastName,
       String _userId,
-      AuthController _authController,
-      ProfileImageController _imageController,
+      ProfileController _profileController,
       BuildContext context) {
     return Center(
       child: GestureDetector(
         onTap: () {
-          if (_authController.isFirstNameValid &&
-              _authController.isLastNameValid) {
-            _authController.setFirstName(firstName);
-            _authController.setLastName(lastName);
-            _authController.setProfileImage(_imageController.imagePiced!);
-            _authController.saveUserProfile(_userId);
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => BottomNavBar()),
-            );
-          }
+          _profileController.setFirstName(firstName);
+          _profileController.setLastName(lastName);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => BottomNavBar()),
+            (route) => false, // Removes all previous routes
+          );
         },
         child: Container(
           width: width * 0.5,
@@ -229,5 +212,4 @@ class AuthProfile extends StatelessWidget {
       ),
     );
   }
-
 }

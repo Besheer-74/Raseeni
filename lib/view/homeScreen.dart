@@ -110,7 +110,7 @@ class Homescreen extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute<void>(
-              builder: (BuildContext context) => Streakscreen(),
+              builder: (BuildContext context) => StreakScreen(),
             ),
           );
         },

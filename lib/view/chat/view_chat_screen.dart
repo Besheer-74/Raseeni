@@ -64,7 +64,7 @@ class _ViewChatScreenState extends State<ViewChatScreen> {
         children: [
           IconButton(
             onPressed: () {
-              // Handle back navigation
+              Navigator.pop(context);
             },
             icon: Icon(
               AppStyles.back,

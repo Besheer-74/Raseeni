@@ -1,46 +1,24 @@
 import 'dart:io';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import '../model/appStyle.dart';
+import '../view/authentication/signup_proccess/auth_profile.dart';
+import '../view/bottomNavBar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../services/firebase_service.dart';
+import 'profile_controller.dart';
 
 class AuthController extends ChangeNotifier {
-  // User details
   String? _email;
   String? _password;
-  String? _firstName;
-  String? _lastName;
-  String? _username;
   String? _userId;
-
-  // Profile image
-  File? _profileImage;
-
-  // Validation flags
-  bool _isEmailValid = false;
   bool _isPasswordHidden = true;
-  bool _isFirstNameValid = false;
-  bool _isLastNameValid = false;
-  bool _isPhoneValid = false;
-  bool _isPasswordValid = false;
 
   // Getters
   String? get email => _email;
   String? get password => _password;
-  String? get firstName => _firstName;
-  String? get lastName => _lastName;
-  String? get username => _username;
   String? get userId => _userId;
-  File? get profileImage => _profileImage;
-
-  bool get isEmailValid => _isEmailValid;
   bool get isPasswordHidden => _isPasswordHidden;
-  bool get isFirstNameValid => _isFirstNameValid;
-  bool get isLastNameValid => _isLastNameValid;
-  bool get isPhoneValid => _isPhoneValid;
-  bool get isPasswordValid => _isPasswordValid;
 
   // Setters
   void setEmail(String email) {
@@ -53,159 +31,171 @@ class AuthController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setFirstName(String firstName) {
-    _firstName = firstName;
-    notifyListeners();
-  }
-
-  void setLastName(String lastName) {
-    _lastName = lastName;
-    notifyListeners();
-  }
-
-  void setUsername(String username) {
-    _username = username;
-    notifyListeners();
-  }
-
-  void setUserId(String userId) {
-    _userId = userId;
-    notifyListeners();
-  }
-
-  void setProfileImage(File image) {
-    _profileImage = image;
-    notifyListeners();
-  }
-
-  // Toggle password visibility
   void togglePasswordVisibility() {
     _isPasswordHidden = !_isPasswordHidden;
     notifyListeners();
   }
 
-  // Validation methods
-  void validateEmail(String email) {
-    _isEmailValid = RegExp(
-      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$",
-    ).hasMatch(email);
-    notifyListeners();
-  }
-
-  void validatePassword(String password) {
-    _isPasswordValid = RegExp(
-      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$',
-    ).hasMatch(password);
-    notifyListeners();
-  }
-
-  void validateFirstName(String firstName) {
-    _isFirstNameValid =
-        RegExp(r"^[a-zA-Z]+([ '-][a-zA-Z]+)*$").hasMatch(firstName);
-    notifyListeners();
-  }
-
-  void validateLastName(String lastName) {
-    _isLastNameValid =
-        RegExp(r"^[a-zA-Z]+([ '-][a-zA-Z]+)*$").hasMatch(lastName);
-    notifyListeners();
-  }
-
-  // User registration
-  Future<User?> registerUserWithEmailAndPassword(BuildContext context) async {
+  // Register user
+  Future<void> registerUser(BuildContext context) async {
     try {
-      final userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: _email!, password: _password!);
-      return userCredential.user;
-    } on FirebaseAuthException catch (e) {
-      final message = e.code == 'weak-password'
-          ? 'The password provided is too weak!'
-          : e.code == 'email-already-in-use'
-              ? 'The account already exists for that email!'
-              : 'An unknown error occurred.';
-      _showSnackBar(context, message);
-    } catch (e) {
-      print('Error during registration: $e');
-    }
-    return null;
-  }
+      final user = await FirebaseService.registerUserWithEmailAndPassword(
+        email: _email!,
+        password: _password!,
+      );
+      if (user != null) {
+        _userId = user.uid;
+        await FirebaseService.saveUserProfile(
+          userId: _userId!,
+          email: _email!,
+          firstName: '',
+          lastName: '',
+        );
 
-  // Upload profile image to Firebase Storage
-  Future<String?> uploadProfileImageToStorage(File image) async {
-    try {
-      final fileName = DateTime.now().millisecondsSinceEpoch.toString();
-      final storageRef =
-          FirebaseStorage.instance.ref().child('profile_images/$fileName.jpg');
-      final snapshot = await storageRef.putFile(image).whenComplete(() => null);
-      return await snapshot.ref.getDownloadURL();
-    } catch (e) {
-      print('Error uploading image: $e');
-      return null;
-    }
-  }
-
-  // Save user profile to Firestore
-  Future<void> saveUserProfile(String userId) async {
-    try {
-      String? imageUrl;
-      if (_profileImage != null) {
-        imageUrl = await uploadProfileImageToStorage(_profileImage!);
+        _showSnackBar(context, 'Registration successful!');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => AuthProfile()),
+          (route) => false, // Removes all previous routes
+        );
       }
-      await FirebaseFirestore.instance.collection('users').doc(userId).set({
-        'email': _email,
-        'firstName': _firstName,
-        'lastName': _lastName,
-        // 'username': _username,
-        'image': imageUrl,
-      });
     } catch (e) {
-      print('Error saving profile: $e');
+      _showSnackBar(context, "=================Error===================");
+    }
+  }
+
+  Future<void> loginUser(
+    BuildContext context,
+    ProfileController profileController,
+  ) async {
+    try {
+      final user = await FirebaseService.loginUser(
+        email: _email!,
+        password: _password!,
+      );
+      if (user != null) {
+        _userId = user.uid;
+
+        // Fetch user data and save to SharedPreferences
+        await fetchUserData(profileController);
+
+        _showSnackBar(context, 'Login successful!');
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => BottomNavBar()),
+          (route) => false, // Removes all previous routes
+        );
+      } else {
+        _showSnackBar(context, 'Failed to Login.');
+      }
+    } catch (e) {
+      _showSnackBar(context, e.toString());
+    }
+  }
+
+  Future<void> logoutUser() async {
+    await FirebaseService.logoutUser();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    notifyListeners();
+  }
+
+  Future<void> updateUserName(ProfileController _profileController,
+      String firstName, String lastName) async {
+    try {
+      // Update Firestore
+      if (_userId == null) {
+        throw Exception("User ID is null. Unable to update name.");
+      }
+
+      await FirebaseService.updateUserName(
+        userId: _userId!,
+        firstName: firstName,
+        lastName: lastName,
+      );
+
+      // Notify ProfileController
+      _profileController.setFirstName(firstName);
+      _profileController.setLastName(lastName);
+
+      // Update SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('first_name', firstName);
+      await prefs.setString('last_name', lastName);
+    } catch (e) {
+      debugPrint('Error updating user name: $e');
       throw e;
     }
   }
 
-  // Helper method to show SnackBar
+  // Fetch data from Firestore
+  Future<void> fetchUserData(ProfileController profileController) async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("User not logged in");
+
+      _userId = user.uid;
+
+      // Fetch data from Firestore
+      final data = await FirebaseService.getUserProfile(_userId!);
+
+      final firstName = data['firstName'] as String?;
+      final lastName = data['lastName'] as String?;
+      final email = data['email'] as String?;
+
+      // Update local state
+      _email = email;
+      notifyListeners();
+
+      // Update ProfileController
+      profileController.setFirstName(firstName ?? '');
+      profileController.setLastName(lastName ?? '');
+
+      // Save to SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', _userId!);
+      await prefs.setString('email', _email ?? '');
+      if (firstName != null) await prefs.setString('first_name', firstName);
+      if (lastName != null) await prefs.setString('last_name', lastName);
+
+      debugPrint(
+          "Saved to SharedPreferences: firstName=$firstName, lastName=$lastName");
+    } catch (e) {
+      debugPrint('Error fetching user data: $e');
+      throw e;
+    }
+  }
+
+  Future<void> initialize(ProfileController profileController) async {
+    final prefs = await SharedPreferences.getInstance();
+    _userId = prefs.getString('user_id');
+    _email = prefs.getString('email');
+
+    debugPrint("Loaded from SharedPreferences: userId=$_userId, email=$_email");
+
+    if (_userId != null) {
+      final firstName = prefs.getString('first_name');
+      final lastName = prefs.getString('last_name');
+
+      debugPrint("Loaded names: firstName=$firstName, lastName=$lastName");
+
+      if (firstName != null && lastName != null) {
+        profileController.setFirstName(firstName);
+        profileController.setLastName(lastName);
+      } else {
+        // Fallback to fetch data from Firestore
+        await fetchUserData(profileController);
+      }
+    }
+  }
+
   void _showSnackBar(BuildContext context, String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(
-          message,
-          style: AppStyles.bold15(AppStyles.whiteColor),
-        ),
+        content: Text(message),
         duration: const Duration(seconds: 3),
-        backgroundColor: AppStyles.greenColor,
+        backgroundColor: Colors.green,
       ),
     );
-  }
-
-  // User Login
-  Future<void> loginUser(String email, String password) async {
-    try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
-      print("Login successful!");
-      fetchUserdata();
-    } catch (e) {
-      throw Exception('Login failed: $e');
-    }
-  }
-
-  // Fetch Data
-  Future<void> fetchUserdata() async {
-    var userData =
-        await FirebaseFirestore.instance.collection('users').doc(userId).get();
-    _firstName = userData.get('firstName');
-    _lastName = userData.get('lastName');
-    _email = userData.get('email');
-  }
-
-  // Logout
-  Future<void> logoutUser() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      print("Logout successful!");
-    } catch (e) {
-      throw Exception('Logout failed: $e');
-    }
   }
 }

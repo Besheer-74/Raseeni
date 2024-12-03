@@ -38,7 +38,6 @@ class AuthEmail extends StatelessWidget {
                 SizedBox(height: height * 0.07),
                 _buildInputLabel(
                   "Email Address",
-                  isValid: _authController.isEmailValid,
                 ),
                 SizedBox(height: height * 0.007),
                 _buildEmailField(_authController),
@@ -53,7 +52,6 @@ class AuthEmail extends StatelessWidget {
                 SizedBox(
                   height: height * 0.05,
                 ),
-                
                 _buildTextHaveAcc(context),
               ],
             ),
@@ -63,11 +61,11 @@ class AuthEmail extends StatelessWidget {
     );
   }
 
-  Widget _buildInputLabel(String text, {required bool isValid}) {
+  Widget _buildInputLabel(String text) {
     return Text(
       text,
       style: AppStyles.medium16(
-        isValid ? AppStyles.greenColor : AppStyles.maybeGray,
+        AppStyles.greenColor,
       ),
     );
   }
@@ -75,25 +73,15 @@ class AuthEmail extends StatelessWidget {
   Widget _buildEmailField(AuthController _authController) {
     return TextFormField(
       controller: _emailController,
-      onChanged: (email) => _authController.validateEmail(email),
       decoration: InputDecoration(
         hintText: "rasseni@gmail.com",
         hintStyle: AppStyles.regular16(AppStyles.grayColor),
-        suffixIcon: _authController.isEmailValid
-            ? Icon(Icons.check_circle, color: AppStyles.greenColor)
-            : null,
         border: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: _authController.isEmailValid
-                ? AppStyles.greenColor
-                : AppStyles.grayColor,
-          ),
+          borderSide: BorderSide(color: AppStyles.greenColor),
         ),
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: _authController.isEmailValid
-                ? AppStyles.greenColor
-                : AppStyles.grayColor,
+            color: AppStyles.greenColor,
             width: 1.5,
           ),
         ),
@@ -108,15 +96,13 @@ class AuthEmail extends StatelessWidget {
     return Center(
       child: GestureDetector(
         onTap: () {
-          if (_authController.isEmailValid) {
-            _authController.setEmail(email);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AuthPassword(),
-              ),
-            );
-          }
+          _authController.setEmail(email);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AuthPassword(),
+            ),
+          );
         },
         child: Container(
           width: width * 0.5,

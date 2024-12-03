@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:raseeni/view/dashboard/view_dashboard_screen.dart';
 import '../../model/appStyle.dart';
 
 class Dashboardscreen extends StatelessWidget {
@@ -283,7 +284,7 @@ class Dashboardscreen extends StatelessWidget {
           itemBuilder: (context, index) {
             final _explore = explore[index];
             return _exploreCard(
-                height, width, _explore['title'], _explore['icon']);
+                height, width, _explore['title'], _explore['icon'], context);
           },
         ),
       ),
@@ -309,9 +310,17 @@ class Dashboardscreen extends StatelessWidget {
     );
   }
 
-  Widget _exploreCard(double height, double width, String title, String icon) {
+  Widget _exploreCard(double height, double width, String title, String icon,
+      BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute<void>(
+            builder: (BuildContext context) => ViewDashboardScreen(),
+          ),
+        );
+      },
       child: Card(
         elevation: 5,
         color: AppStyles.indigoColor,
