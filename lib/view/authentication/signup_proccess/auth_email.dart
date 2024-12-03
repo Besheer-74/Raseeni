@@ -137,11 +137,11 @@ class AuthEmail extends StatelessWidget {
         child: Text.rich(
           TextSpan(
             text: "Already registered?\n",
-            style: AppStyles.regular24(AppStyles.blackColor),
+            style: AppStyles.regular16(AppStyles.blackColor),
             children: [
               TextSpan(
                 text: "Click Here To Login",
-                style: AppStyles.regular24(AppStyles.indigoColor),
+                style: AppStyles.regular16(AppStyles.indigoColor),
               ),
             ],
           ),

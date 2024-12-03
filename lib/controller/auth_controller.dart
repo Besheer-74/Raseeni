@@ -1,5 +1,5 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'dart:io';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../view/authentication/signup_proccess/auth_profile.dart';
@@ -23,11 +23,13 @@ class AuthController extends ChangeNotifier {
   // Setters
   void setEmail(String email) {
     _email = email;
+    print(email);
     notifyListeners();
   }
 
   void setPassword(String password) {
     _password = password;
+    print(password);
     notifyListeners();
   }
 
@@ -38,6 +40,14 @@ class AuthController extends ChangeNotifier {
 
   // Register user
   Future<void> registerUser(BuildContext context) async {
+    if (_email == null ||
+        _email!.isEmpty ||
+        _password == null ||
+        _password!.isEmpty) {
+      _showSnackBar(context, 'Email and password must not be empty.');
+      return;
+    }
+    print('Email: $_email, Password: $_password');
     try {
       final user = await FirebaseService.registerUserWithEmailAndPassword(
         email: _email!,
@@ -56,11 +66,23 @@ class AuthController extends ChangeNotifier {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => AuthProfile()),
-          (route) => false, // Removes all previous routes
+          (route) => false,
         );
       }
     } catch (e) {
-      _showSnackBar(context, "=================Error===================");
+      if (e is FirebaseAuthException) {
+        if (e.code == 'email-already-in-use') {
+          _showSnackBar(context, 'Email is already in use.');
+        } else if (e.code == 'weak-password') {
+          _showSnackBar(context, 'The password is too weak.');
+        } else if (e.code == 'invalid-email') {
+          _showSnackBar(context, 'Invalid email format.');
+        } else {
+          _showSnackBar(context, 'An error occurred: ${e.message}');
+        }
+      } else {
+        _showSnackBar(context, 'An unexpected error occurred: ${e.toString()}');
+      }
     }
   }
 

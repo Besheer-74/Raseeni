@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'controller/profile_controller.dart';
 import 'firebase_options.dart';
 
+import 'controller/profile_controller.dart';
 import 'controller/auth_controller.dart';
 import 'controller/streak_controller.dart';
-import 'view/authentication/login_screen.dart';
 import 'controller/chat_controller.dart';
 import 'controller/image_pick_contoller.dart';
 import 'view/bottomNavBar.dart';
+import 'view/authentication/signup_proccess/auth_email.dart';
 import 'model/appStyle.dart';
 import 'controller/bottomNavBarController.dart';
 
@@ -21,13 +21,8 @@ Future<void> main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   final profileController = ProfileController();
-  final authController = AuthController();
-
   await profileController.initialize();
 
-  // Make sure the initialize method is called after profileController is created
-  await profileController
-      .initialize(); // This should load the data from SharedPreferences
   runApp(
     MultiProvider(
       providers: [
@@ -71,7 +66,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? LoginScreen()
+          ? AuthEmail()
           : BottomNavBar(),
     );
   }

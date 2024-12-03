@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raseeni/model/appStyle.dart';
+import 'package:raseeni/view/authentication/signup_proccess/auth_email.dart';
+import 'package:raseeni/view/streakScreen.dart';
 
 import '../controller/auth_controller.dart';
 import '../controller/image_pick_contoller.dart';
@@ -127,7 +129,15 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: width * .06),
             child: GestureDetector(
               onTap: () {
-                _changeName(context, _authController, _profileController);
+                // _changeName(context, _authController, _profileController);
+                _authController.logoutUser();
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => AuthEmail(),
+                  ),
+                  ModalRoute.withName('/'),
+                );
               },
               child: Icon(AppStyles.edit, color: AppStyles.blueColor),
             ),
@@ -186,7 +196,10 @@ class ProfileScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _buildActionButton('Streak', '4', Icons.local_fire_department,
-              AppStyles.orangeColor, width, height),
+              AppStyles.orangeColor, width, height, () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => StreakScreen()));
+          }),
           SizedBox(width: width * 0.03),
           _buildActionButton('Done\nCourses', '1', AppStyles.done,
               AppStyles.greenColor, width, height, () {
