@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:http/http.dart';
 
 class FirebaseService {
   // Register
@@ -16,17 +17,37 @@ class FirebaseService {
   }
 
   // Save data to Firestore
-  static Future<void> saveUserProfile({
+  static Future<void> saveUserData({
     required String userId,
     required String email,
     required String firstName,
     required String lastName,
   }) async {
     await FirebaseFirestore.instance.collection('users').doc(userId).set({
+      'userId': userId,
       'email': email,
       'firstName': firstName,
       'lastName': lastName,
     });
+  }
+
+  static Future<void> saveUserProfile({
+    required String userId,
+    String? firstName,
+    String? lastName,
+  }) async {
+    final data = <String, dynamic>{};
+    if (firstName != null) data['firstName'] = firstName;
+    if (lastName != null) data['lastName'] = lastName;
+
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(userId).set(
+            data,
+            SetOptions(merge: true), // Merge new fields with existing data
+          );
+    } catch (e) {
+      throw Exception('Error saving user profile: $e');
+    }
   }
 
   // Get user data from Firestore

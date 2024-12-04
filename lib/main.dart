@@ -3,17 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:raseeni/controller/app_user_controller.dart';
 import 'firebase_options.dart';
 
+import 'controller/onboarding_controller.dart';
 import 'controller/profile_controller.dart';
+import 'controller/bottomNavBarController.dart';
 import 'controller/auth_controller.dart';
 import 'controller/streak_controller.dart';
-import 'controller/chat_controller.dart';
 import 'controller/image_pick_contoller.dart';
 import 'view/bottomNavBar.dart';
-import 'view/authentication/signup_proccess/auth_email.dart';
+import 'view/onBoardingScreen.dart';
+
 import 'model/appStyle.dart';
-import 'controller/bottomNavBarController.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,12 +28,13 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => AppUser()),
+        ChangeNotifierProvider(create: (_) => OnboardingController()),
         ChangeNotifierProvider(create: (_) => AuthController()),
         ChangeNotifierProvider(create: (_) => ProfileController()),
         ChangeNotifierProvider(create: (_) => ProfileImageController()),
         ChangeNotifierProvider(create: (_) => BottomNavBarController()),
         ChangeNotifierProvider(create: (_) => StreakContoller()),
-        ChangeNotifierProvider(create: (_) => ChatController()),
       ],
       child: MyApp(),
     ),
@@ -66,7 +69,7 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: FirebaseAuth.instance.currentUser == null
-          ? AuthEmail()
+          ? OnboardingScreen()
           : BottomNavBar(),
     );
   }

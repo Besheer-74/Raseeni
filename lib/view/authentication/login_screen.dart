@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raseeni/controller/profile_controller.dart';
@@ -50,7 +51,9 @@ class LoginScreen extends StatelessWidget {
                 ),
                 // SizedBox(height: height * 0.007),
                 _buildPasswordField(_authController),
-                SizedBox(height: height * 0.1),
+                _buildTextResetPass(
+                    context, _authController, _profileController),
+                SizedBox(height: height * 0.05),
                 _buildNextButton(
                   width,
                   height,
@@ -61,8 +64,9 @@ class LoginScreen extends StatelessWidget {
                   _profileController,
                 ),
                 SizedBox(
-                  height: height * 0.05,
+                  height: height * 0.03,
                 ),
+
                 _buildTextHaveAcc(context),
               ],
             ),
@@ -177,6 +181,25 @@ class LoginScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildTextResetPass(BuildContext context,
+      AuthController _authController, ProfileController _profileController) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          onPressed: () {
+            _resetPassword(context, _authController, _profileController);
+          },
+          child: Text(
+            "Forget password?",
+            style: AppStyles.regular16(AppStyles.indigoColor),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildTextHaveAcc(BuildContext context) {
     return Center(
       child: TextButton(
@@ -192,7 +215,7 @@ class LoginScreen extends StatelessWidget {
         child: Text.rich(
           textAlign: TextAlign.center,
           TextSpan(
-            text: "Don’t have an account?\n",
+            text: "Don’t have an account? ",
             style: AppStyles.regular16(AppStyles.blackColor),
             children: [
               TextSpan(
@@ -203,6 +226,45 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _resetPassword(
+    BuildContext context,
+    AuthController _authController,
+    ProfileController _profileController,
+  ) async {
+    final _emailResetController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Reset Password'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _emailResetController,
+                decoration:
+                    const InputDecoration(labelText: 'Enter your email'),
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await _authController.resetPassword(
+                    context, _emailResetController.text);
+              },
+              child: const Text('Reset Password'),
+            ),
+          ],
+        );
+      },
     );
   }
 }

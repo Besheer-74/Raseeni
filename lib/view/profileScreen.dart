@@ -1,8 +1,9 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:raseeni/model/appStyle.dart';
-import 'package:raseeni/view/authentication/signup_proccess/auth_email.dart';
 import 'package:raseeni/view/streakScreen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../controller/auth_controller.dart';
 import '../controller/image_pick_contoller.dart';
@@ -26,7 +27,7 @@ class ProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            _buildTopBar(height, width),
+            _buildTopBar(height, width, _authController),
             _buildProfileContent(context, _authController, _profileController,
                 _imageController, width, height),
           ],
@@ -35,7 +36,8 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTopBar(double height, double width) {
+  Widget _buildTopBar(
+      double height, double width, AuthController _authController) {
     return Container(
       width: double.infinity,
       height: height * 0.11,
@@ -44,15 +46,30 @@ class ProfileScreen extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Image.asset(AppStyles.logoWithoutBackground),
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Align(
+              alignment: Alignment.center,
+              child: SizedBox(
+                width: width * 0.3,
+                height: height * 0.08,
+                child: Image.asset(
+                  AppStyles.logoWithoutBackground,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
           Positioned(
             right: 16,
             top: 16,
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _authController.logoutUser();
+              
+              },
               icon: Icon(
                 AppStyles.notificationNone,
                 color: AppStyles.whiteColor,
@@ -93,7 +110,7 @@ class ProfileScreen extends StatelessWidget {
               SizedBox(height: height * 0.02),
               _buildActionButtons(context, width, height),
               SizedBox(height: height * 0.02),
-              _buildSocialMediaLinks(),
+              _buildSocialMediaLinks(height, width),
             ],
           ),
         ),
@@ -129,15 +146,7 @@ class ProfileScreen extends StatelessWidget {
             padding: EdgeInsets.only(right: width * .06),
             child: GestureDetector(
               onTap: () {
-                // _changeName(context, _authController, _profileController);
-                _authController.logoutUser();
-                Navigator.pushAndRemoveUntil(
-                  context,
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => AuthEmail(),
-                  ),
-                  ModalRoute.withName('/'),
-                );
+                _changeName(context, _authController, _profileController);
               },
               child: Icon(AppStyles.edit, color: AppStyles.blueColor),
             ),
@@ -218,13 +227,13 @@ class ProfileScreen extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: height * 0.1,
-        width: width * 0.4,
+        width: width * 0.42,
         decoration: BoxDecoration(
           color: color,
           borderRadius: BorderRadius.circular(35),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(label, style: AppStyles.regular20(AppStyles.whiteColor)),
             Row(
@@ -239,28 +248,33 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSocialMediaLinks() {
+  Widget _buildSocialMediaLinks(double height, double width) {
     return Column(
       children: [
-        SizedBox(height: 10),
         Text('Find Us On', style: AppStyles.regular16(AppStyles.blackColor)),
-        SizedBox(height: 10),
+        SizedBox(height: height * 0.01),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            _buildSocialIcon('assets/images/social media/facebook.png'),
-            _buildSocialIcon('assets/images/social media/instagram.png'),
-            _buildSocialIcon('assets/images/social media/linkedin.png'),
-            _buildSocialIcon('assets/images/social media/twitter.png'),
+            _buildSocialIcon('assets/images/social media/facebook.png',
+                'https://www.facebook.com/profile.php?id=61569534639498'),
+            _buildSocialIcon('assets/images/social media/instagram.png',
+                'https://www.instagram.com/official_rasseni/'),
+            _buildSocialIcon('assets/images/social media/linkedin.png',
+                'https://linkedin.com/company/rasseni'),
+            _buildSocialIcon('assets/images/social media/twitter.png',
+                'https://x.com/OfficialRasseni'),
           ],
         ),
       ],
     );
   }
 
-  Widget _buildSocialIcon(String assetPath) {
+  Widget _buildSocialIcon(String assetPath, String link) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        _launchLinkedInURL(link);
+      },
       child: Container(
         width: 40,
         height: 40,
@@ -282,27 +296,39 @@ class ProfileScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (context) {
-        return AlertDialog(
+        return CupertinoAlertDialog(
           title: const Text('Change Name'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
+              CupertinoTextField(
                 controller: firstNameController,
-                decoration: const InputDecoration(labelText: 'First Name'),
+                placeholder: 'First Name',
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.inactiveGray),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
-              TextField(
+              const SizedBox(height: 16),
+              CupertinoTextField(
                 controller: lastNameController,
-                decoration: const InputDecoration(labelText: 'Last Name'),
+                placeholder: 'Last Name',
+                padding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.inactiveGray),
+                  borderRadius: BorderRadius.circular(8),
+                ),
               ),
             ],
           ),
           actions: [
-            TextButton(
+            CupertinoDialogAction(
               onPressed: () => Navigator.pop(context),
               child: const Text('Cancel'),
             ),
-            TextButton(
+            CupertinoDialogAction(
+              isDefaultAction: true,
               onPressed: () async {
                 final newFirstName = firstNameController.text.trim();
                 final newLastName = lastNameController.text.trim();
@@ -315,7 +341,7 @@ class ProfileScreen extends StatelessWidget {
                       content: Text('Name updated successfully!')));
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error updating name: $e')));
+                      SnackBar(content: Text("Can't update name")));
                 }
               },
               child: const Text('Save'),
@@ -383,5 +409,12 @@ class ProfileScreen extends StatelessWidget {
         icon: Icon(AppStyles.edit, color: AppStyles.whiteColor, size: 25),
       ),
     );
+  }
+
+  Future<void> _launchLinkedInURL(String link) async {
+    final Uri url = Uri.parse(link);
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 }

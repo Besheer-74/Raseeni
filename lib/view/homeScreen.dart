@@ -56,7 +56,7 @@ class Homescreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(height),
+            _buildAppBar(height, width),
             _buildStreakCard(width, height, context),
             SizedBox(height: height * 0.01),
             _buildScrollableContent(width, height, courses, progressPercentage),
@@ -66,7 +66,7 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(double height) {
+  Widget _buildAppBar(double height, double width) {
     return Container(
       width: double.infinity,
       height: height * .09,
@@ -81,8 +81,13 @@ class Homescreen extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Image.asset(
-              AppStyles.logoWithoutBackground,
+            child: SizedBox(
+              width: width * 0.3,
+              height: height * 0.08,
+              child: Image.asset(
+                AppStyles.logoWithoutBackground,
+                fit: BoxFit.cover, // Ensure it scales nicely
+              ),
             ),
           ),
           Positioned(

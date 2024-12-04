@@ -1,5 +1,7 @@
 import 'dart:convert'; // For Base64 encoding/decoding
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,16 +16,37 @@ class ProfileController extends ChangeNotifier {
   File? get profileImage => _profileImage;
 
   // Setters
-  void setFirstName(String name) {
+  void setFirstName(String name) async {
     _firstName = name;
     _saveToPreferences('first_name', name);
+    await _updateFirestoreProfile();
     notifyListeners();
   }
 
-  void setLastName(String name) {
+  void setLastName(String name) async {
     _lastName = name;
     _saveToPreferences('last_name', name);
+    await _updateFirestoreProfile();
     notifyListeners();
+  }
+
+  Future<void> _updateFirestoreProfile() async {
+    if (_firstName != null && _lastName != null) {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        try {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(user.uid)
+              .update({
+            'firstName': _firstName,
+            'lastName': _lastName,
+          });
+        } catch (e) {
+          debugPrint('Error updating Firestore profile: $e');
+        }
+      }
+    }
   }
 
   void setProfileImage(File image) async {

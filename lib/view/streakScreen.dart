@@ -107,17 +107,17 @@ class StreakScreen extends StatelessWidget {
   Widget _buildHeader(int index, double height, double width) {
     return Padding(
       padding: EdgeInsets.only(
-        left: width * 0.05,
+        left: width * 0.02,
         top: height * 0.02,
         bottom: height * 0.02,
-        right: width * 0.05,
+        right: width * 0.02,
       ),
       child: Align(
         alignment: Alignment.topLeft,
         child: Row(
           children: [
             Text('${index + 1}', style: AppStyles.bold48(AppStyles.whiteColor)),
-            SizedBox(width: width * 0.02),
+            SizedBox(width: width * 0.01),
             Text('December', style: AppStyles.regular24(AppStyles.whiteColor)),
           ],
         ),
@@ -132,9 +132,9 @@ class StreakScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text('${index + 1}', style: AppStyles.bold96(AppStyles.whiteColor)),
-          SizedBox(width: width * 0.01),
+          // SizedBox(width: width * 0.01),
           Text("Day's\nStreak",
-              style: AppStyles.regular32(AppStyles.whiteColor)),
+              style: AppStyles.regular24(AppStyles.whiteColor)),
         ],
       ),
     );

@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'auth_controller.dart';
 import 'profile_controller.dart';
 
 class ProfileImageController extends ChangeNotifier {

@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../controller/auth_controller.dart';
-import '../../../controller/profile_controller.dart';
 import '../../../model/appStyle.dart';
-import 'auth_profile.dart';
 
 class AuthPassword extends StatelessWidget {
   final TextEditingController _passwordController = TextEditingController();
@@ -17,7 +14,6 @@ class AuthPassword extends StatelessWidget {
     final double width = size.width;
     final double height = size.height;
     final _authController = Provider.of<AuthController>(context);
-    final _profileController = Provider.of<ProfileController>(context);
 
     return Scaffold(
       body: SafeArea(

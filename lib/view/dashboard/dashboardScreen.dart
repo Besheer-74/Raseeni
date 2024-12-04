@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:raseeni/view/dashboard/view_dashboard_screen.dart';
+import 'package:raseeni/view/homeScreen.dart';
 import '../../model/appStyle.dart';
 
 class Dashboardscreen extends StatelessWidget {
@@ -53,8 +54,8 @@ class Dashboardscreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            _buildAppBar(height),
-            _buildProgressCard(width, height, progressPercentage),
+            _buildAppBar(height, width),
+            _buildProgressCard(width, height, progressPercentage, context),
             SizedBox(height: height * 0.01),
             _buildSectionTitle("Explore", width),
             _buildExploreList(width, height),
@@ -67,7 +68,7 @@ class Dashboardscreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAppBar(double height) {
+  Widget _buildAppBar(double height, double width) {
     return Container(
       width: double.infinity,
       height: height * .09,
@@ -82,7 +83,14 @@ class Dashboardscreen extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Image.asset(AppStyles.logoWithoutBackground),
+            child: SizedBox(
+              width: width * 0.3,
+              height: height * 0.08,
+              child: Image.asset(
+                AppStyles.logoWithoutBackground,
+                fit: BoxFit.cover, // Ensure it scales nicely
+              ),
+            ),
           ),
           Positioned(
             right: 16,
@@ -100,8 +108,8 @@ class Dashboardscreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCard(
-      double width, double height, double progressPercentage) {
+  Widget _buildProgressCard(double width, double height,
+      double progressPercentage, BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Container(
@@ -123,10 +131,11 @@ class Dashboardscreen extends StatelessWidget {
                 children: [
                   _buildProgressIndicator(progressPercentage, height),
                   SizedBox(width: width * 0.1),
-                  _buildProgressDetails(height),
+                  _buildProgressDetails(height, width),
                 ],
               ),
-              _buildViewAllButton(width, height),
+              SizedBox(height: height * 0.03),
+              _buildViewAllButton(width, height, context),
             ],
           ),
         ),
@@ -179,21 +188,26 @@ class Dashboardscreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressDetails(double height) {
+  Widget _buildProgressDetails(double height, double width) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         _buildProgressIndicatorWithColor(
-            70, 50, AppStyles.indigoColor, AppStyles.blackColor),
+            70, 71, AppStyles.indigoColor, AppStyles.blackColor, width),
         SizedBox(height: height * 0.04),
         _buildProgressIndicatorWithColor(
-            20, 50, AppStyles.greenColor, AppStyles.blackColor),
+            20, 71, AppStyles.greenColor, AppStyles.blackColor, width),
       ],
     );
   }
 
-  Widget _buildProgressIndicatorWithColor(int progressPercentage, double size,
-      Color valueColor, Color backgroundColor) {
+  Widget _buildProgressIndicatorWithColor(
+    int progressPercentage,
+    double size,
+    Color valueColor,
+    Color backgroundColor,
+    double width,
+  ) {
     return Row(
       children: [
         SizedBox(
@@ -210,28 +224,18 @@ class Dashboardscreen extends StatelessWidget {
                 backgroundColor: backgroundColor,
               ),
               Center(
-                child: Text(
-                  '${progressPercentage.toInt()}',
-                  style: TextStyle(
-                    fontFamily: 'IBM Plex Sans',
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                    color: valueColor,
-                    letterSpacing: -2,
-                  ),
-                ),
+                child: Text('${progressPercentage.toInt()}',
+                    style: AppStyles.bold24(valueColor)),
               ),
             ],
           ),
         ),
-        SizedBox(width: 10),
+        SizedBox(width: width * 0.03),
         Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Align(
-                alignment: Alignment.topLeft,
-                child: Text('Web dev',
-                    style: AppStyles.bold15(AppStyles.blackColor))),
-            Text('Master Class',
+            Text("Mobile Dev", style: AppStyles.bold15(AppStyles.blackColor)),
+            Text("Master Class",
                 style: AppStyles.regular15(AppStyles.blackColor)),
           ],
         ),
@@ -239,15 +243,23 @@ class Dashboardscreen extends StatelessWidget {
     );
   }
 
-  Widget _buildViewAllButton(double width, double height) {
+  Widget _buildViewAllButton(
+      double width, double height, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => const Homescreen(),
+              ),
+            );
+          },
           child: Container(
-            width: width * .5,
-            height: height * 0.06,
+            width: width * 0.5,
+            height: height * 0.055,
             decoration: BoxDecoration(
               color: AppStyles.orangeColor,
               borderRadius: BorderRadius.circular(35),
@@ -267,7 +279,7 @@ class Dashboardscreen extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: width * 0.03),
       child: Align(
         alignment: Alignment.centerLeft,
-        child: Text(title, style: AppStyles.light24(AppStyles.whiteColor)),
+        child: Text(title, style: AppStyles.light24(AppStyles.blackColor)),
       ),
     );
   }

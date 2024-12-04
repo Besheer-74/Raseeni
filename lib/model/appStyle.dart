@@ -13,6 +13,7 @@ class AppStyles {
   static const Color whiteColor = Color(0xffF7F9F8);
   static const Color blackColor = Color(0xff050505);
   static const Color grayColor = Color(0xffBDBEBE);
+  static const Color darkGrayColor = Color(0xffD9D9D9);
   static const Color maybeGray = Color(0xffA6A9CB);
   static const Color redColor = Color(0xffC73E1C);
   static const Color darkOrangeColor = Color(0xffFF5B00);
@@ -209,8 +210,7 @@ class AppStyles {
   static const IconData logout = Icons.logout_rounded;
   static const IconData chat = Icons.chat_rounded;
   static const IconData search = Icons.search_rounded;
-  static const IconData notificationActive = Icons.notifications_active_rounded;
-  static const IconData notificationNone = Icons.notifications_none_rounded;
+  static const IconData notificationNone = Icons.notifications_active_rounded;
   static const IconData menu = Icons.menu_rounded;
   static const IconData add = Icons.add_rounded;
   static const IconData edit = Icons.edit_rounded;

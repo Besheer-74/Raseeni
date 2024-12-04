@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -136,11 +135,11 @@ class AuthEmail extends StatelessWidget {
         },
         child: Text.rich(
           TextSpan(
-            text: "Already registered?\n",
+            text: "Already registered? ",
             style: AppStyles.regular16(AppStyles.blackColor),
             children: [
               TextSpan(
-                text: "Click Here To Login",
+                text: "Login",
                 style: AppStyles.regular16(AppStyles.indigoColor),
               ),
             ],

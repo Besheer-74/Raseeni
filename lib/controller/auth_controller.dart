@@ -12,12 +12,14 @@ class AuthController extends ChangeNotifier {
   String? _email;
   String? _password;
   String? _userId;
+
   bool _isPasswordHidden = true;
 
   // Getters
   String? get email => _email;
   String? get password => _password;
   String? get userId => _userId;
+
   bool get isPasswordHidden => _isPasswordHidden;
 
   // Setters
@@ -39,14 +41,9 @@ class AuthController extends ChangeNotifier {
   }
 
   // Register user
-  Future<void> registerUser(BuildContext context) async {
-    if (_email == null ||
-        _email!.isEmpty ||
-        _password == null ||
-        _password!.isEmpty) {
-      _showSnackBar(context, 'Email and password must not be empty.');
-      return;
-    }
+  Future<void> registerUser(
+    BuildContext context,
+  ) async {
     print('Email: $_email, Password: $_password');
     try {
       final user = await FirebaseService.registerUserWithEmailAndPassword(
@@ -55,7 +52,7 @@ class AuthController extends ChangeNotifier {
       );
       if (user != null) {
         _userId = user.uid;
-        await FirebaseService.saveUserProfile(
+        await FirebaseService.saveUserData(
           userId: _userId!,
           email: _email!,
           firstName: '',
@@ -69,20 +66,30 @@ class AuthController extends ChangeNotifier {
           (route) => false,
         );
       }
-    } catch (e) {
-      if (e is FirebaseAuthException) {
-        if (e.code == 'email-already-in-use') {
-          _showSnackBar(context, 'Email is already in use.');
-        } else if (e.code == 'weak-password') {
-          _showSnackBar(context, 'The password is too weak.');
-        } else if (e.code == 'invalid-email') {
-          _showSnackBar(context, 'Invalid email format.');
-        } else {
-          _showSnackBar(context, 'An error occurred: ${e.message}');
-        }
-      } else {
-        _showSnackBar(context, 'An unexpected error occurred: ${e.toString()}');
+    } on FirebaseAuthException catch (e) {
+      // Handle specific Firebase Authentication errors
+      String errorMessage;
+      switch (e.code) {
+        case 'email-already-in-use':
+          errorMessage = 'This email is already in use by another account.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        case 'operation-not-allowed':
+          errorMessage = 'Signup with email and password is not enabled.';
+          break;
+        case 'weak-password':
+          errorMessage =
+              'The password is too weak. Please choose a stronger one.';
+          break;
+        default:
+          errorMessage = 'An unknown error occurred. Please try again later.';
       }
+      _showSnackBar(context, errorMessage);
+    } catch (e) {
+      // Handle general errors
+      _showSnackBar(context, 'An error occurred: ${e.toString()}');
     }
   }
 
@@ -107,11 +114,30 @@ class AuthController extends ChangeNotifier {
           MaterialPageRoute(builder: (context) => BottomNavBar()),
           (route) => false, // Removes all previous routes
         );
-      } else {
-        _showSnackBar(context, 'Failed to Login.');
       }
+    } on FirebaseAuthException catch (e) {
+      // Handle specific Firebase Authentication errors
+      String errorMessage;
+      switch (e.code) {
+        case 'invalid-email':
+          errorMessage = 'The email address is not valid.';
+          break;
+        case 'user-disabled':
+          errorMessage = 'This user account has been disabled.';
+          break;
+        case 'user-not-found':
+          errorMessage = 'No user found with this email address.';
+          break;
+        case 'wrong-password':
+          errorMessage = 'Incorrect password. Please try again.';
+          break;
+        default:
+          errorMessage = 'Incorrect password. Please try again.';
+      }
+      _showSnackBar(context, errorMessage);
     } catch (e) {
-      _showSnackBar(context, e.toString());
+      // Handle general errors
+      _showSnackBar(context, 'An error occurred: ${e.toString()}');
     }
   }
 
@@ -208,6 +234,31 @@ class AuthController extends ChangeNotifier {
         // Fallback to fetch data from Firestore
         await fetchUserData(profileController);
       }
+    }
+  }
+
+  Future<void> resetPassword(BuildContext context, String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      _showSnackBar(context,
+          'Password reset email sent to $email. Please check your inbox.');
+    } on FirebaseAuthException catch (e) {
+      // Handle Firebase-specific exceptions
+      String errorMessage;
+      switch (e.code) {
+        case 'user-not-found':
+          errorMessage = 'No user found with this email address.';
+          break;
+        case 'invalid-email':
+          errorMessage = 'The email address entered is invalid.';
+          break;
+        default:
+          errorMessage = 'An error occurred. Please try again later.';
+      }
+      _showSnackBar(context, errorMessage);
+    } catch (e) {
+      // Handle any other errors
+      _showSnackBar(context, 'An unexpected error occurred: ${e.toString()}');
     }
   }
 
