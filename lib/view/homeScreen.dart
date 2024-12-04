@@ -1,9 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:raseeni/controller/app_user_controller.dart';
 import 'package:raseeni/model/appStyle.dart';
+import 'package:raseeni/model/courses_model.dart';
+import 'package:raseeni/view/add_course_screen.dart';
+import 'package:raseeni/view/course_view.dart';
 
 import 'streakScreen.dart';
 
+// the home page
 class Homescreen extends StatelessWidget {
   const Homescreen({super.key});
 
@@ -59,7 +65,8 @@ class Homescreen extends StatelessWidget {
             _buildAppBar(height, width),
             _buildStreakCard(width, height, context),
             SizedBox(height: height * 0.01),
-            _buildScrollableContent(width, height, courses, progressPercentage),
+            _buildScrollableContent(
+                width, height, courses, progressPercentage, context),
           ],
         ),
       ),
@@ -149,8 +156,12 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildScrollableContent(double width, double height,
-      List<Map<String, dynamic>> courses, double progressPercentage) {
+  Widget _buildScrollableContent(
+      double width,
+      double height,
+      List<Map<String, dynamic>> courses,
+      double progressPercentage,
+      BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -158,9 +169,12 @@ class Homescreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildProgressCard(width, height, progressPercentage),
+              _buildProgressCard(width, height, progressPercentage, context),
               SizedBox(height: height * 0.02),
-              _buildCourseGrid(width, height, courses),
+              _buildCourseGrid(
+                width,
+                height,
+              ),
             ],
           ),
         ),
@@ -168,117 +182,179 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _buildProgressCard(
-      double width, double height, double progressPercentage) {
-    return Card(
-      elevation: 20,
-      color: AppStyles.yellowColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35),
-      ),
-      child: Padding(
-        padding: EdgeInsets.only(
-            left: width * 0.07, top: height * 0.03, bottom: height * 0.02),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  height: 100,
-                  width: 100,
-                  child: Stack(
-                    fit: StackFit.expand,
+  Widget _buildProgressCard(double width, double height,
+      double progressPercentage, BuildContext context) {
+    return Consumer<AppUser>(
+      builder: (context, myProvider, child) {
+        if (myProvider.myCoursesList.isEmpty) {
+          return Center(
+            child: Text(
+              "No courses added yet!",
+              style: AppStyles.regular24(AppStyles.blackColor),
+            ),
+          );
+        }
+
+// Add this check to ensure the list is not empty before accessing the first item
+        if (myProvider.myCoursesList.isNotEmpty) {
+          // Use the first course safely
+          return GestureDetector(
+            child: Card(
+                // Existing code for the card...
+                ),
+          );
+        }
+
+        return GestureDetector(
+          child: Card(
+            elevation: 20,
+            color: AppStyles.yellowColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(35),
+            ),
+            child: Padding(
+              padding: EdgeInsets.only(
+                  left: width * 0.07,
+                  top: height * 0.03,
+                  bottom: height * 0.02),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      CircularProgressIndicator(
-                        strokeCap: StrokeCap.round,
-                        value: progressPercentage / 100,
-                        strokeWidth: 20,
-                        valueColor:
-                            AlwaysStoppedAnimation<Color>(AppStyles.whiteColor),
-                        backgroundColor: AppStyles.blackColor,
+                      SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Stack(
+                          fit: StackFit.expand,
+                          children: [
+                            CircularProgressIndicator(
+                              strokeCap: StrokeCap.round,
+                              value: myProvider
+                                  .getProgress(myProvider.myCoursesList[0].id),
+                              strokeWidth: 20,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppStyles.whiteColor),
+                              backgroundColor: AppStyles.blackColor,
+                            ),
+                            Center(
+                              child: Text(
+                                  '${myProvider.getProgress(myProvider.myCoursesList[0].id).toInt()}',
+                                  style:
+                                      AppStyles.bold48(AppStyles.whiteColor)),
+                            ),
+                          ],
+                        ),
                       ),
-                      Center(
-                        child: Text('${progressPercentage.toInt()}',
-                            style: AppStyles.bold48(AppStyles.whiteColor)),
+                      Container(
+                        height: height * 0.05,
+                        width: width * 0.25,
+                        decoration: BoxDecoration(
+                          color: AppStyles.indigoColor,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(35),
+                            bottomLeft: Radius.circular(35),
+                          ),
+                        ),
+                        child: Center(
+                          child: Text("Continue",
+                              style: AppStyles.bold12(
+                                AppStyles.whiteColor,
+                              )),
+                        ),
                       ),
                     ],
                   ),
-                ),
-                Container(
-                  height: height * 0.05,
-                  width: width * 0.25,
-                  decoration: BoxDecoration(
-                    color: AppStyles.indigoColor,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      bottomLeft: Radius.circular(35),
-                    ),
+                  SizedBox(height: height * 0.04),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            myProvider.myCoursesList[0].name,
+                            style: AppStyles.bold32(AppStyles.blackColor),
+                          ),
+                          Text('Master Class',
+                              style: AppStyles.regular32(AppStyles.blackColor)),
+                        ],
+                      ),
+                      SizedBox(
+                        height: height * 0.1,
+                        child: Image.asset(
+                          AppStyles.dart,
+                        ),
+                      ),
+                    ],
                   ),
-                  child: Center(
-                    child: Text("Continue",
-                        style: AppStyles.bold12(
-                          AppStyles.whiteColor,
-                        )),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-            SizedBox(height: height * 0.04),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Dart', style: AppStyles.bold32(AppStyles.blackColor)),
-                    Text('Master Class',
-                        style: AppStyles.regular32(AppStyles.blackColor)),
-                  ],
-                ),
-                SizedBox(
-                  height: height * 0.1,
-                  child: Image.asset(AppStyles.dart),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 
-  Widget _buildCourseGrid(
-      double width, double height, List<Map<String, dynamic>> courses) {
+  Widget _buildCourseGrid(double width, double height) {
     return Padding(
       padding: EdgeInsets.only(bottom: height * .06),
-      child: GridView.builder(
-        shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12.0,
-          mainAxisSpacing: 12.0,
-          childAspectRatio: 0.85,
-        ),
-        itemCount: courses.length + 1,
-        itemBuilder: (context, index) {
-          if (index == courses.length) {
-            return _addCard(height, width);
-          }
-          final course = courses[index];
-          return _courseCard(
-            height,
-            width,
-            course['title'],
-            course['subtitle'],
-            course['image'],
-            course['progress'],
-            course['color'],
-          );
-        },
-      ),
+      child: Consumer<AppUser>(builder: (context, user, child) {
+        // Ensure there's at least one item to skip
+        final itemCount = user.myCoursesList.length > 1
+            ? user.myCoursesList.length // Show courses and "Add Card"
+            : 1; // Show only "Add Card" if no courses are available
+
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 12.0,
+            mainAxisSpacing: 12.0,
+            childAspectRatio: 0.85,
+          ),
+          // Add +1 to include the "Add Card"
+          itemCount:
+              user.myCoursesList.isEmpty ? 1 : user.myCoursesList.length + 1,
+
+          itemBuilder: (context, index) {
+            // If the list is empty or this is the last item, show the "Add Card"
+            if (user.myCoursesList.isEmpty ||
+                index == user.myCoursesList.length) {
+              return _addCard(height, width, context);
+            }
+
+            // Safe access for courses
+            final course = user.myCoursesList[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TheCoursesScreen(
+                      theCourseItems: course.content,
+                      courseName: course.name,
+                      courseId: course.id,
+                    ),
+                  ),
+                );
+              },
+              child: _courseCard(
+                height,
+                width,
+                course.name,
+                'Master Class',
+                course.image,
+                user.getProgress(course.id).toInt(),
+                AppStyles.maybeBlueColor,
+              ),
+            );
+          },
+        );
+      }),
     );
   }
 
@@ -354,32 +430,38 @@ class Homescreen extends StatelessWidget {
     );
   }
 
-  Widget _addCard(double height, double width) {
-    return Card(
-      elevation: 10,
-      color: AppStyles.whiteColor,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(35),
-      ),
-      child: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppStyles.grayColor,
-                ),
-                child: Icon(
-                  Icons.add,
-                  size: 40,
-                  color: AppStyles.whiteColor,
-                )),
-            SizedBox(
-              height: height * 0.01,
-            ),
-            Text('Add Course', style: AppStyles.bold15(AppStyles.grayColor)),
-          ],
+  Widget _addCard(double height, double width, BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => AddCourseScreen()));
+      },
+      child: Card(
+        elevation: 10,
+        color: AppStyles.whiteColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(35),
+        ),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: AppStyles.grayColor,
+                  ),
+                  child: Icon(
+                    Icons.add,
+                    size: 40,
+                    color: AppStyles.whiteColor,
+                  )),
+              SizedBox(
+                height: height * 0.01,
+              ),
+              Text('Add Course', style: AppStyles.bold15(AppStyles.grayColor)),
+            ],
+          ),
         ),
       ),
     );

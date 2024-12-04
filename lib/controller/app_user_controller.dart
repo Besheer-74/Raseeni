@@ -12,6 +12,13 @@ class AppUser extends ChangeNotifier {
 
   AppUser() {
     _loadData();
+    for (var element in theCoursesList) {
+      if (element.name == 'CS50') {
+        print(element);
+        addCourse(element);
+      }
+    }
+    notifyListeners();
   }
 
   void _filterLoadedCourses() {

@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:raseeni/controller/app_user_controller.dart';
+import 'package:raseeni/model/course_item_model.dart';
 
 import '../model/appStyle.dart';
 
 class TheCoursesScreen extends StatelessWidget {
-  const TheCoursesScreen({super.key});
+  final List<CourseItem> theCourseItems;
+  final String courseId;
+  final String courseName;
+  const TheCoursesScreen(
+      {super.key,
+      required this.theCourseItems,
+      required this.courseName,
+      required this.courseId});
 
   @override
   Widget build(BuildContext context) {
@@ -17,9 +26,13 @@ class TheCoursesScreen extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              _theAppBar(width, height),
-              _theProgressIndicator(height),
-              Expanded(child: WebDevStepper()),
+              _theAppBar(width, height, courseName, context),
+              _theProgressIndicator(height, context),
+              Expanded(
+                  child: WebDevStepper(
+                theCourseItems: theCourseItems,
+                courseId: courseId,
+              )),
             ],
           ),
         ),
@@ -27,12 +40,13 @@ class TheCoursesScreen extends StatelessWidget {
     );
   }
 
-  Widget _theAppBar(double width, double height) {
+  Widget _theAppBar(
+      double width, double height, String title, BuildContext context) {
     return Stack(
       children: [
         Container(
           width: double.infinity,
-          height: height * .09,
+          height: height * .12,
           decoration: BoxDecoration(
             color: AppStyles.yellowColor,
           ),
@@ -44,7 +58,9 @@ class TheCoursesScreen extends StatelessWidget {
                 child: Row(
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         icon: Icon(
                           AppStyles.back,
                           color: AppStyles.blackColor,
@@ -55,7 +71,7 @@ class TheCoursesScreen extends StatelessWidget {
                         SizedBox(
                           height: height * 0.01,
                         ),
-                        Text("Web dev",
+                        Text(courseName,
                             style: AppStyles.semiBold24(AppStyles.blackColor)),
                         Text("Master Class",
                             style: AppStyles.regular24(AppStyles.blackColor))
@@ -78,40 +94,42 @@ class TheCoursesScreen extends StatelessWidget {
     );
   }
 
-  Widget _theProgressIndicator(double height) {
-    return Stack(
-      children: [
-        LinearProgressIndicator(
-          color: AppStyles.greenColor,
-          backgroundColor: AppStyles.grayColor,
-          value: 70 / 100,
-          minHeight: height * 0.045,
-        ),
-        Column(
-          children: [
-            SizedBox(
-              height: height * 0.015,
-            ),
-            Container(
-              height: height * 0.05,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35)),
-                  color: AppStyles.whiteColor,
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppStyles.grayColor,
-                      spreadRadius: 0,
-                      blurRadius: 4,
-                      offset: const Offset(0, -4),
-                    )
-                  ]),
-            ),
-          ],
-        ),
-      ],
-    );
+  Widget _theProgressIndicator(double height, BuildContext context) {
+    return Consumer<AppUser>(builder: (context, myProvider, child) {
+      return Stack(
+        children: [
+          LinearProgressIndicator(
+            color: AppStyles.greenColor,
+            backgroundColor: AppStyles.grayColor,
+            value: myProvider.getProgress(myProvider.myCoursesList[0].id) / 100,
+            minHeight: height * 0.045,
+          ),
+          Column(
+            children: [
+              SizedBox(
+                height: height * 0.015,
+              ),
+              Container(
+                height: height * 0.05,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(35),
+                        topRight: Radius.circular(35)),
+                    color: AppStyles.whiteColor,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppStyles.grayColor,
+                        spreadRadius: 0,
+                        blurRadius: 4,
+                        offset: const Offset(0, -4),
+                      )
+                    ]),
+              ),
+            ],
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -151,169 +169,211 @@ class StepperState with ChangeNotifier {
   }
 }
 
+// class WebDevStepper extends StatelessWidget {
+//   final List<CourseItem> theCourseItems;
+//   final String courseId;
+//   const WebDevStepper(
+//       {super.key, required this.theCourseItems, required this.courseId});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final Size size = MediaQuery.of(context).size;
+//     final double width = size.width;
+//     final double height = size.height;
+//     var stepperState = Provider.of<StepperState>(context);
+//     return Consumer<AppUser>(
+//       builder: (context, user, child) {
+//         return SingleChildScrollView(
+//           child: Padding(
+//             padding: const EdgeInsets.all(16.0),
+//             child: Column(
+//               children: [
+//                 Theme(
+//                   data: ThemeData(
+//                     primaryColor: AppStyles
+//                         .greenColor, // This will affect the active step's color
+//                     colorScheme: ColorScheme.light(
+//                       primary: AppStyles
+//                           .greenColor, // Primary color for various elements
+//                       secondary: AppStyles
+//                           .grayColor, // Secondary color for progress indicators
+//                     ),
+//                   ),
+//                   child: Stepper(
+//                     currentStep: stepperState.currentStep,
+//                     onStepContinue: null, // Remove the continue button action
+//                     onStepCancel: null, // Remove the cancel button action
+//                     controlsBuilder:
+//                         (BuildContext context, ControlsDetails details) {
+//                       // Empty builder to remove the buttons
+//                       return SizedBox
+//                           .shrink(); // This removes the buttons entirely
+//                     },
+//                     steps: List.generate(
+//                       theCourseItems.length,
+//                       (index) {
+//                         return Step(
+//                           title: Container(
+//                               margin: EdgeInsets.only(top: 16.0),
+//                               padding: EdgeInsets.only(
+//                                 left: 16.0,
+//                               ),
+//                               width: double.maxFinite,
+//                               height: height * 0.15,
+//                               decoration: BoxDecoration(
+//                                   color: AppStyles.greenColor,
+//                                   borderRadius:
+//                                       BorderRadius.all(Radius.circular(35))),
+//                               child: Align(
+//                                 alignment: Alignment.centerLeft,
+//                                 child: Text(
+//                                   theCourseItems[index].title,
+//                                   style:
+//                                       AppStyles.medium20(AppStyles.whiteColor),
+//                                 ),
+//                               )),
+//                           content: Container(),
+//                           isActive: stepperState.currentStep >= 0,
+//                           state: StepState.complete,
+//                         );
+//                       },
+//                     ),
+//                   ),
+//                 ),
+//                 SizedBox(height: 20),
+//                 ElevatedButton(
+//                   onPressed: () {
+//                     // Logic for the Continue button
+//                   },
+//                   child: Text(
+//                     'Continue',
+//                     style: AppStyles.semiBold32(AppStyles.whiteColor),
+//                   ),
+//                   style: ElevatedButton.styleFrom(
+//                     shape: RoundedRectangleBorder(
+//                         borderRadius: BorderRadius.circular(35)),
+//                     minimumSize: Size(double.infinity, height * 0.1),
+//                     backgroundColor: AppStyles.greenColor,
+//                   ),
+//                 ),
+//               ],
+//             ),
+//           ),
+//         );
+//       },
+//     );
+//   }
+
+//   Widget _theCourseCard(
+//       double height, String text, Color textColor, Color backgroundColor) {
+//     return Container(
+//         margin: EdgeInsets.only(top: 16.0),
+//         padding: EdgeInsets.only(left: 16.0),
+//         width: double.maxFinite,
+//         height: height * 0.1,
+//         decoration: BoxDecoration(
+//             color: AppStyles.yellowColor,
+//             borderRadius: BorderRadius.all(Radius.circular(35))),
+//         child: Align(
+//           alignment: Alignment.centerLeft,
+//           child: Text(
+//             "HTML",
+//             style: AppStyles.medium20(AppStyles.blackColor),
+//           ),
+//         ));
+//   }
+// }
+
 class WebDevStepper extends StatelessWidget {
+  final List<CourseItem> theCourseItems;
+  final String courseId;
+
+  const WebDevStepper(
+      {super.key, required this.theCourseItems, required this.courseId});
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final double width = size.width;
     final double height = size.height;
-    return Consumer<StepperState>(
-      builder: (context, stepperState, _) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Theme(
-                  data: ThemeData(
-                    primaryColor: AppStyles
-                        .greenColor, // This will affect the active step's color
-                    colorScheme: ColorScheme.light(
-                      primary: AppStyles
-                          .greenColor, // Primary color for various elements
-                      secondary: AppStyles
-                          .grayColor, // Secondary color for progress indicators
-                    ),
-                  ),
-                  child: Stepper(
-                    currentStep: stepperState.currentStep,
-                    onStepContinue: null, // Remove the continue button action
-                    onStepCancel: null, // Remove the cancel button action
-                    controlsBuilder:
-                        (BuildContext context, ControlsDetails details) {
-                      // Empty builder to remove the buttons
-                      return SizedBox
-                          .shrink(); // This removes the buttons entirely
-                    },
-                    steps: [
-                      Step(
-                        title: Container(
-                            padding: EdgeInsets.only(left: 16.0),
-                            width: double.maxFinite,
-                            height: height * 0.1,
-                            decoration: BoxDecoration(
-                                color: AppStyles.greenColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(35))),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "Intro to Web Dev",
-                                style: AppStyles.medium20(AppStyles.whiteColor),
-                              ),
-                            )),
-                        content: Container(),
-                        isActive: stepperState.currentStep >= 0,
-                        state: StepState.complete,
-                      ),
-                      Step(
-                        title: Container(
-                            margin: EdgeInsets.only(top: 16.0),
-                            padding: EdgeInsets.only(left: 16.0),
-                            width: double.maxFinite,
-                            height: height * 0.1,
-                            decoration: BoxDecoration(
-                                color: AppStyles.yellowColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(35))),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "HTML",
-                                style: AppStyles.medium20(AppStyles.blackColor),
-                              ),
-                            )),
-                        content: Container(),
-                        isActive: stepperState.currentStep >= 1,
-                        state: StepState.indexed,
-                      ),
-                      Step(
-                        title: Container(
-                            margin: EdgeInsets.only(top: 16.0),
-                            padding: EdgeInsets.only(left: 16.0),
-                            width: double.maxFinite,
-                            height: height * 0.1,
-                            decoration: BoxDecoration(
-                                color: AppStyles.grayColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(35))),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "CSS",
-                                style: AppStyles.medium24(
-                                    AppStyles.blackColor.withOpacity(0.7)),
-                              ),
-                            )),
-                        content: Container(),
-                        isActive: stepperState.currentStep >= 2,
-                        state: StepState.indexed,
-                      ),
-                      Step(
-                        title: Container(
-                            margin: EdgeInsets.only(top: 16),
-                            padding: EdgeInsets.only(left: 16.0),
-                            width: double.maxFinite,
-                            height: height * 0.1,
-                            decoration: BoxDecoration(
-                                color: AppStyles.grayColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(35))),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                "JavaScript",
-                                style: AppStyles.medium24(
-                                    AppStyles.blackColor.withOpacity(0.7)),
-                              ),
-                            )),
-                        content: Container(),
-                        isActive: stepperState.currentStep >= 3,
-                        state: StepState.indexed,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () {
-                    // Logic for the Continue button
-                  },
-                  child: Text(
-                    'Continue',
-                    style: AppStyles.semiBold32(AppStyles.whiteColor),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(35)),
-                    minimumSize: Size(double.infinity, height * 0.1),
-                    backgroundColor: AppStyles.greenColor,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
+    final stepperState = Provider.of<StepperState>(context);
 
-  Widget _theCourseCard(
-      double height, String text, Color textColor, Color backgroundColor) {
-    return Container(
-        margin: EdgeInsets.only(top: 16.0),
-        padding: EdgeInsets.only(left: 16.0),
-        width: double.maxFinite,
-        height: height * 0.1,
-        decoration: BoxDecoration(
-            color: AppStyles.yellowColor,
-            borderRadius: BorderRadius.all(Radius.circular(35))),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            "HTML",
-            style: AppStyles.medium20(AppStyles.blackColor),
-          ),
-        ));
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Theme(
+              data: ThemeData(
+                primaryColor: AppStyles.greenColor,
+                colorScheme: ColorScheme.light(
+                  primary: AppStyles.greenColor,
+                  secondary: AppStyles.grayColor,
+                ),
+              ),
+              child: Stepper(
+                physics: const ClampingScrollPhysics(), // Allow scrolling
+                currentStep: stepperState.currentStep,
+                onStepTapped: (step) {
+                  stepperState._currentStep = step;
+                  stepperState.notifyListeners(); // Update stepper state
+                },
+                onStepContinue: () => stepperState.nextStep(),
+                onStepCancel: () => stepperState.prevStep(),
+                controlsBuilder: (context, details) {
+                  // Remove the default buttons
+                  return const SizedBox.shrink();
+                },
+                steps: List.generate(
+                  theCourseItems.length,
+                  (index) => Step(
+                    title: Container(
+                      margin: const EdgeInsets.only(top: 16.0),
+                      padding: const EdgeInsets.only(left: 16.0),
+                      width: double.infinity,
+                      height: height * 0.15,
+                      decoration: BoxDecoration(
+                        color: stepperState.currentStep == index
+                            ? AppStyles.greenColor
+                            : AppStyles.grayColor, // Dynamic color
+                        borderRadius: BorderRadius.circular(35),
+                      ),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          theCourseItems[index].title,
+                          style: AppStyles.regular14(AppStyles.whiteColor),
+                        ),
+                      ),
+                    ),
+                    content: Container(), // Empty for now
+                    isActive: stepperState.currentStep >= index,
+                    state: stepperState.currentStep > index
+                        ? StepState.complete
+                        : StepState.indexed,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                stepperState.nextStep();
+              },
+              child: Text(
+                'Continue',
+                style: AppStyles.semiBold32(AppStyles.whiteColor),
+              ),
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(35),
+                ),
+                minimumSize: Size(double.infinity, height * 0.1),
+                backgroundColor: AppStyles.greenColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
